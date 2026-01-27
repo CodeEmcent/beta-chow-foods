@@ -1,0 +1,68 @@
+.admin-login {
+  max-width: 360px;
+  margin: 100px auto;
+  padding: 28px;
+  border-radius: 14px;
+  background-color: #121212;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+.admin-login h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+}
+
+.admin-login form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-login input {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.admin-login input::placeholder {
+  color: #999;
+}
+
+.admin-login input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #1f1f1f;
+}
+
+.admin-login button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.admin-login button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.admin-login button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.admin-login-error {
+  color: #ff6b6b;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}

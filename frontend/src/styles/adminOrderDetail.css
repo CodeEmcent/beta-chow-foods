@@ -1,0 +1,78 @@
+.admin-order-detail {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 24px;
+  background: #111;
+  border-radius: 14px;
+  border: 1px solid #333;
+}
+
+.order-title {
+  margin-bottom: 16px;
+  font-size: 1.6rem;
+}
+
+.order-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.status-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.status-new { background: #555; }
+.status-accepted { background: #0066cc; }
+.status-cooking { background: #cc6600; }
+.status-out_for_delivery { background: #9933cc; }
+.status-completed { background: #228b22; }
+.status-cancelled { background: #cc0000; }
+
+.order-section {
+  margin-top: 20px;
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+}
+
+.order-items li {
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+}
+
+.order-summary {
+  margin-top: 20px;
+  border-top: 1px solid #333;
+  padding-top: 12px;
+}
+
+.order-total {
+  font-size: 1.1rem;
+  margin-top: 6px;
+}
+
+.admin-loading,
+.admin-error {
+  text-align: center;
+  margin-top: 40px;
+  color: #bbb;
+}
+
+.admin-error {
+  color: tomato;
+}

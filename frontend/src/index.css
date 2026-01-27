@@ -1,0 +1,40 @@
+/* index.css */
+:root {
+  --gold: #F4B400;
+  --gold-dark: #C69200;
+  --green: #1F5E3B;
+  --green-dark: #14452A;
+  --red: #A61C1C;
+
+  /* LIGHT SITE BASE (restaurant-friendly) */
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --border: rgba(17, 24, 39, 0.10);
+  --text: #111827;
+  --muted: rgba(17, 24, 39, 0.70);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(31, 94, 59, 0.10), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(244, 180, 0, 0.10), transparent 45%);
+  pointer-events: none;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+input, textarea, select { font-family: inherit; }

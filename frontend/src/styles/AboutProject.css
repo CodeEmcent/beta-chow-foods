@@ -1,0 +1,32 @@
+.about-project {
+  display: grid;
+  gap: 16px;
+}
+
+.about-project h1 {
+  margin-bottom: 8px;
+}
+
+.about-project section {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #111;
+}
+
+.about-project h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.about-project ul {
+  padding-left: 18px;
+}
+
+.about-project li {
+  margin-bottom: 6px;
+}
+
+.about-project p {
+  line-height: 1.6;
+}

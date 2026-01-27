@@ -1,0 +1,68 @@
+.track-order {
+  display: grid;
+  gap: 16px;
+}
+
+.track-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.track-input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.track-card {
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 16px;
+  background: #161616;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.track-items {
+  padding-left: 18px;
+}
+
+.track-items li {
+  margin-bottom: 6px;
+}
+
+.error-text {
+  color: tomato;
+}
+
+.loading-text {
+  opacity: 0.8;
+}
+
+/* Dynamic status colors */
+.status {
+  font-weight: bold;
+}
+
+.status.NEW {
+  color: orange;
+}
+
+.status.ACCEPTED {
+  color: #4caf50;
+}
+
+.status.COOKING {
+  color: #ff9800;
+}
+
+.status.OUT_FOR_DELIVERY {
+  color: #03a9f4;
+}
+
+.status.COMPLETED {
+  color: #8bc34a;
+}
+
+.status.CANCELLED {
+  color: tomato;
+}

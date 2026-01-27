@@ -1,0 +1,65 @@
+.cart-page {
+  display: grid;
+  gap: 16px;
+}
+
+.cart-item {
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 12px;
+  background: #161616;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: grid;
+  gap: 8px;
+}
+
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cart-notes {
+  opacity: 0.8;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-summary {
+  border-top: 1px solid #333;
+  padding-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.qty-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: tomato;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  text-align: center;
+  padding: 12px;
+  width: 100%;
+  background: #25D366;
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}

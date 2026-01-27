@@ -1,0 +1,23 @@
+.contact-page {
+  display: grid;
+  gap: 16px;
+}
+
+.contact-card {
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 16px;
+  background: #161616;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.contact-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.contact-actions a {
+  text-decoration: none;
+}
