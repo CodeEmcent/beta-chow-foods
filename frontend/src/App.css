@@ -1,8 +1,15 @@
-/* App.css */
+/* App.css (ENHANCED) */
+
+/* Layout wrapper: fluid + wide on desktop */
 .container {
-  max-width: 1200px;
+  width: min(1600px, 100%);
   margin: 0 auto;
-  padding: 16px;
+  padding: 16px clamp(16px, 3vw, 56px);
+}
+
+/* Full-bleed section helper (use on sections you want edge-to-edge) */
+.full-bleed {
+  width: 100%;
 }
 
 /* BUTTONS */

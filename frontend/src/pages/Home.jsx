@@ -1,4 +1,4 @@
-// Home.jsx
+// Home.jsx (ENHANCED)
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import friedRice from "../assets/fried_rice.jpg";
 import egusi from "../assets/egusi.jpg";
 import suya from "../assets/suya.jpg";
 import chops from "../assets/small_chops.jpg";
+import Testimonials from "../components/Testimonials";
 
 export default function Home() {
   const sliderSettings = {
@@ -24,15 +25,15 @@ export default function Home() {
     autoplaySpeed: 2400,
     pauseOnHover: true,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      { breakpoint: 1200, settings: { slidesToShow: 2 } },
+      { breakpoint: 760, settings: { slidesToShow: 1 } },
     ],
   };
 
   return (
     <div className="home">
-      {/* HERO VIDEO */}
-      <section className="hero video-hero">
+      {/* HERO VIDEO (FULL WIDTH) */}
+      <section className="hero video-hero full-bleed">
         <video autoPlay muted loop playsInline className="hero-video">
           <source src={heroVideo} type="video/mp4" />
         </video>
@@ -74,7 +75,7 @@ export default function Home() {
 
       {/* FOOD CAROUSEL */}
       <motion.section
-        className="featured"
+        className="featured full-bleed"
         initial={{ opacity: 0, y: 36 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
@@ -92,9 +93,9 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* WHY US */}
+      {/* WHY US (EXPANDED) */}
       <motion.section
-        className="why-us"
+        className="why-us full-bleed"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.2 }}
@@ -102,18 +103,41 @@ export default function Home() {
       >
         <div className="section-inner">
           <h2>Why Nigerians Love Beta Chow</h2>
+          <p className="section-subtitle">
+            Real Naija flavour, clean preparation, and a smooth ordering experience — built for Lagos.
+          </p>
+
           <div className="why-grid">
-            <Feature title="🔥 Fresh Meals" text="Cooked daily with fresh ingredients" />
-            <Feature title="🚀 Fast Delivery" text="Swift delivery across Lagos" />
-            <Feature title="💯 Quality Taste" text="Authentic Nigerian flavour" />
-            <Feature title="💰 Affordable" text="Great taste without breaking the bank" />
+            <Feature title="🔥 Fresh Meals" text="Cooked daily with fresh ingredients and careful preparation." />
+            <Feature title="🚀 Fast Delivery" text="Swift delivery across key Lagos routes and neighbourhoods." />
+            <Feature title="💯 Quality Taste" text="Authentic Nigerian flavour — consistent, satisfying, memorable." />
+            <Feature title="💰 Affordable" text="Great portions and value without breaking the bank." />
+            <Feature title="🧼 Clean & Hygienic" text="Neat kitchen practices and food handled with care." />
+            <Feature title="📍 Lagos-Ready" text="Orders designed around Lagos addresses, landmarks, and directions." />
+            <Feature title="📱 Easy to Order" text="Order online or quickly via WhatsApp when you’re in a rush." />
+            <Feature title="⏱️ Reliable Timing" text="Clear order updates so you know what’s happening and when." />
+          </div>
+
+          <div className="why-strip">
+            <div className="strip-item">
+              <div className="strip-kpi">4.8★</div>
+              <div className="strip-label">Customer joy</div>
+            </div>
+            <div className="strip-item">
+              <div className="strip-kpi">Fresh</div>
+              <div className="strip-label">Daily cooking</div>
+            </div>
+            <div className="strip-item">
+              <div className="strip-kpi">Fast</div>
+              <div className="strip-label">Lagos delivery</div>
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* HOW TO ORDER */}
+      {/* HOW TO ORDER (EXPANDED + RESPONSIVE STEPS) */}
       <motion.section
-        className="how-to-order"
+        className="how-to-order full-bleed"
         initial={{ opacity: 0, y: 36 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
@@ -121,24 +145,38 @@ export default function Home() {
       >
         <div className="section-inner">
           <h2>How to Order</h2>
-          <div className="steps">
-            <Step number="1" text="Browse our Menu" />
-            <Step number="2" text="Add to Cart" />
-            <Step number="3" text="Checkout & Relax" />
-            <Step number="4" text="We Deliver" />
+          <p className="section-subtitle">
+            A simple 5-step journey — quick, clear, and made for Lagos.
+          </p>
+
+          <div className="steps-grid">
+            <Step number="1" title="Browse Menu" text="Explore categories, prices, and best sellers." />
+            <Step number="2" title="Add to Cart" text="Select quantity, extras, and preferences." />
+            <Step number="3" title="Checkout" text="Choose delivery or pickup, add address/landmark." />
+            <Step number="4" title="Confirm & Pay" text="Pay on delivery, transfer, or confirm payment reference." />
+            <Step number="5" title="Track Order" text="Follow your order from kitchen to doorstep." />
+          </div>
+
+          <div className="order-actions">
+            <Link to="/menu" className="btn primary">
+              Start Order
+            </Link>
+            <Link to="/track" className="btn outline-dark">
+              Track an Order
+            </Link>
           </div>
         </div>
       </motion.section>
 
       {/* CTA */}
       <motion.section
-        className="cta"
+        className="cta full-bleed"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.55 }}
       >
-        <div className="section-inner">
+        {/* <div className="section-inner">
           <div className="cta-card">
             <h2>Ready to Enjoy Great Food?</h2>
             <p>Order now and let us serve you delicious Nigerian meals.</p>
@@ -146,7 +184,8 @@ export default function Home() {
               Order Now
             </Link>
           </div>
-        </div>
+        </div> */}
+        <Testimonials />
       </motion.section>
     </div>
   );
@@ -166,9 +205,12 @@ const Feature = ({ title, text }) => (
   </div>
 );
 
-const Step = ({ number, text }) => (
-  <div className="step">
-    <span>{number}</span>
+const Step = ({ number, title, text }) => (
+  <div className="step-card">
+    <div className="step-bubble">
+      <span>{number}</span>
+    </div>
+    <h4>{title}</h4>
     <p>{text}</p>
   </div>
 );
