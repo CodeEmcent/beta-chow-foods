@@ -60,7 +60,13 @@ export default function Menu() {
 
   return (
     <div className="menu-page">
-      <h1>Menu</h1>
+      <div className="menu-header">
+  <h1>Our Menu</h1>
+  <p>
+    Freshly prepared Nigerian meals and drinks.  
+    Choose a category and add items to your cart.
+  </p>
+</div>
 
       {/* Category Buttons */}
       <div className="category-bar">{catButtons}</div>
@@ -69,31 +75,39 @@ export default function Menu() {
       {items.length === 0 ? (
         <p className="empty-text">No items available in this category.</p>
       ) : (
-        <div className="grid-auto">
-          {items.map((it) => (
-            <div key={it.id} className="menu-card">
-              {it.image_url ? (
-                <img
-                  src={it.image_url}
-                  alt={it.name}
-                  className="menu-image"
-                />
-              ) : (
-                <div className="menu-image placeholder">No image</div>
-              )}
+        <div className="menu-grid-wrapper">
+          <div className="grid-auto">
+            {items.map((it) => (
+              <div key={it.id} className="menu-card">
+                {it.image_url ? (
+                  <img
+                    src={it.image_url}
+                    alt={it.name}
+                    className="menu-image"
+                  />
+                ) : (
+                  <div className="menu-image placeholder">No image</div>
+                )}
 
-              <h3 className="menu-title">{it.name}</h3>
-              <p className="menu-desc">{it.description}</p>
-              <p className="menu-price">₦{it.price}</p>
+                <span className="badge">Available</span>
 
-              <button
-                className="btn-primary"
-                onClick={() => addToCart(it, 1)}
-              >
-                Add to Cart
-              </button>
-            </div>
-          ))}
+                <h3 className="menu-title">{it.name}</h3>
+                <p className="menu-desc">{it.description}</p>
+                <p className="menu-price">₦{it.price}</p>
+
+                <button
+                  className="btn-primary"
+                  onClick={() => {
+    addToCart(it, 1);
+    alert(`${it.name} added to cart`);
+  }}
+
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

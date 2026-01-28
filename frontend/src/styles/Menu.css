@@ -1,14 +1,54 @@
 .menu-page {
-  display: grid;
-  gap: 16px;
+  width: 100%;
+  padding: 32px clamp(16px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.menu-header {
+  max-width: 720px;
+}
+
+.menu-header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+  color: var(--gold);
+}
+
+.menu-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.menu-grid-wrapper {
+  width: 100%;
+  max-width: 1400px;
+}
+
+.badge {
+  background: rgba(0, 160, 90, 0.15);
+  color: var(--green-dark);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  margin-top: 6px;
 }
 
 /* CATEGORY BUTTONS */
 
 .category-bar {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
+  padding: 12px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 80px;
+  z-index: 5;
 }
 
 .category-btn {
@@ -36,17 +76,22 @@
 
 .grid-auto {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
 /* MENU CARDS */
 
 .menu-card {
   border: 1px solid var(--green);
-  border-radius: 14px;
-  padding: 12px;
-  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.02),
+    rgba(0,0,0,0.15)
+  );
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: grid;
@@ -56,6 +101,17 @@
 .menu-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* BUTTONS */
+
+.btn-primary {
+  margin-top: auto;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  background: var(--green-dark);
+  color: #fff;
 }
 
 /* IMAGES */
