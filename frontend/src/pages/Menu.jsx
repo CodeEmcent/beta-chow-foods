@@ -4,6 +4,13 @@ import { useCart } from "../context/CartContext";
 import Loading from "../components/Loading";
 import "../styles/Menu.css";
 
+// ✅ Money formatter (NGN with commas + 2 decimals)
+const formatMoney = (amount) =>
+  amount.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
 export default function Menu() {
   const { addToCart } = useCart();
   const [categories, setCategories] = useState([]);
@@ -12,6 +19,7 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
+  // Fetch categories on load
   useEffect(() => {
     (async () => {
       try {
@@ -28,6 +36,7 @@ export default function Menu() {
     })();
   }, []);
 
+  // Fetch menu items when category changes
   useEffect(() => {
     (async () => {
       if (activeCat === null) return;
@@ -41,6 +50,7 @@ export default function Menu() {
     })();
   }, [activeCat]);
 
+  // Category buttons
   const catButtons = useMemo(
     () =>
       categories.map((c) => (
@@ -93,14 +103,14 @@ export default function Menu() {
 
                 <h3 className="menu-title">{it.name}</h3>
                 <p className="menu-desc">{it.description}</p>
-                <p className="menu-price">₦{it.price}</p>
+                <p className="menu-price">₦{formatMoney(Number(it.price))}</p>
 
                 <button
                   className="btn-primary"
                   onClick={() => {
-    addToCart(it, 1);
-    alert(`${it.name} added to cart`);
-  }}
+                    addToCart(it, 1);
+                    alert(`${it.name} added to cart`);
+                  }}
 
                 >
                   Add to Cart

@@ -6,6 +6,13 @@ import "../styles/Cart.css";
 // 👉 Replace this with your real WhatsApp number (no + sign)
 const BUSINESS_WHATSAPP = "2347062163979";
 
+// ✅ Money formatter (NGN with commas + 2 decimals)
+const formatMoney = (amount) =>
+  amount.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
 export default function Cart() {
   const nav = useNavigate();
   const { cart, removeFromCart, setQty, subtotal } = useCart();
@@ -13,18 +20,21 @@ export default function Cart() {
   // Build WhatsApp order message from cart
   const whatsappMessage = encodeURIComponent(
     `Hello Beta Chow Foods, I would like to order:\n\n` +
-    cart.map(x => `- ${x.name} x${x.quantity}`).join("\n") +
-    `\n\nSubtotal: ₦${subtotal.toFixed(2)}`
+      cart.map(x => `- ${x.name} x${x.quantity}`).join("\n") +
+      `\n\nSubtotal: ₦${formatMoney(subtotal)}`
   );
 
   const whatsappLink = `https://wa.me/${BUSINESS_WHATSAPP}?text=${whatsappMessage}`;
 
+  // EMPTY CART STATE
   if (cart.length === 0) {
     return (
       <div className="cart-page">
         <h1>Your Cart</h1>
         <p>Your cart is empty.</p>
-        <Link to="/menu" className="btn">Go to Menu</Link>
+        <Link to="/menu" className="btn">
+          Go to Menu
+        </Link>
       </div>
     );
   }
@@ -35,32 +45,43 @@ export default function Cart() {
 
       {cart.map((x, idx) => (
         <div key={idx} className="cart-item">
-          <div className="cart-item-header">
-            <div>
-              <b>{x.name}</b>
-              {x.notes ? (
+          {/* ITEM TOP */}
+          <div className="cart-item-main">
+            <div className="cart-item-info">
+              <h3 className="cart-item-name">{x.name}</h3>
+
+              {x.notes && (
                 <div className="cart-notes">Note: {x.notes}</div>
-              ) : null}
+              )}
             </div>
-            <div>
-              <b>₦{(x.price * x.quantity).toFixed(2)}</b>
+
+            <div className="cart-item-price">
+              ₦{formatMoney(x.price * x.quantity)}
             </div>
           </div>
 
+          {/* CONTROLS */}
           <div className="cart-controls">
-            <button
-              className="qty-btn"
-              onClick={() => setQty(idx, x.quantity - 1)}
-            >
-              -
-            </button>
-            <span>{x.quantity}</span>
-            <button
-              className="qty-btn"
-              onClick={() => setQty(idx, x.quantity + 1)}
-            >
-              +
-            </button>
+            <div className="qty-controls">
+              <button
+                className="qty-btn"
+                data-action="decrease"
+                onClick={() => setQty(idx, x.quantity - 1)}
+              >
+                −
+              </button>
+
+              <span className="qty-value">{x.quantity}</span>
+
+              <button
+                className="qty-btn"
+                data-action="increase"
+                onClick={() => setQty(idx, x.quantity + 1)}
+              >
+                +
+              </button>
+            </div>
+
             <button
               className="remove-btn"
               onClick={() => removeFromCart(idx)}
@@ -71,8 +92,14 @@ export default function Cart() {
         </div>
       ))}
 
+      {/* SUMMARY */}
       <div className="cart-summary">
-        <p><b>Subtotal:</b> ₦{subtotal.toFixed(2)}</p>
+        <p className="subtotal-row">
+          <span>Subtotal: </span> 
+          <span className="subtotal-amount">
+            ₦{formatMoney(subtotal)}
+          </span>
+        </p>
 
         {/* Normal checkout */}
         <button

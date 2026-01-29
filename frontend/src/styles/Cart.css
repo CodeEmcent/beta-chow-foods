@@ -1,56 +1,116 @@
 .cart-page {
+  width: 100%;
+  padding: 32px clamp(16px, 4vw, 64px);
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
+
+/* CART ITEM */
 
 .cart-item {
-  border: 1px solid #333;
-  border-radius: 14px;
-  padding: 12px;
-  background: #161616;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  background: #f9faf9;
+  border-radius: 16px;
+  padding: 16px;
   display: grid;
-  gap: 8px;
+  gap: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-.cart-item-header {
+/* TOP ROW */
+
+.cart-item-main {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 12px;
 }
 
-.cart-notes {
-  opacity: 0.8;
+.cart-item-name {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1b5e20;
 }
+
+.cart-notes {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.cart-item-price {
+  font-weight: 700;
+  color: #b71c1c;
+  white-space: nowrap;
+}
+
+/* CONTROLS */
 
 .cart-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
-.cart-summary {
-  border-top: 1px solid #333;
-  padding-top: 12px;
-  display: grid;
-  gap: 10px;
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef3ee;
+  padding: 6px 8px;
+  border-radius: 10px;
 }
 
 .qty-btn {
   padding: 4px 10px;
   border-radius: 6px;
-  border: 1px solid #333;
-  background: #111;
+  border: none;
+  background: #1b5e20;
   color: white;
+  font-weight: bold;
   cursor: pointer;
+}
+
+.qty-value {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.qty-btn[data-action="decrease"] {
+  background: #b71c1c;        /* deep red */
+}
+
+.qty-btn[data-action="increase"] {
+  background: #1b5e20;        /* green */
+}
+
+.qty-btn:hover {
+  opacity: 0.9;
 }
 
 .remove-btn {
   margin-left: auto;
-  color: tomato;
   background: transparent;
   border: none;
+  font-weight: 600;
   cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  background: #d32f2f;
+  color: #fff;
+}
+
+.subtotal-amount {
+  font-weight: 800;
+}
+
+/* SUMMARY */
+
+.cart-summary {
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+  display: grid;
+  gap: 12px;
 }
 
 .whatsapp-btn {
