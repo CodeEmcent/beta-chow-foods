@@ -88,7 +88,7 @@ class OrderPublicSerializer(serializers.ModelSerializer):
         fields = [
             "order_no", "status", "order_type", "delivery_address", "landmark",
             "payment_method", "payment_reference", "subtotal", "delivery_fee", "total",
-            "created_at", "customer", "items",
+            "created_at", "completed_at", "customer", "items",
         ]
 
     def get_customer(self, obj):
@@ -105,7 +105,6 @@ class OrderPublicSerializer(serializers.ModelSerializer):
             for i in obj.items.all()
         ]
 
-
 class OrderAdminSerializer(serializers.ModelSerializer):
     items = serializers.SerializerMethodField()
     customer = serializers.SerializerMethodField()
@@ -113,6 +112,7 @@ class OrderAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+        read_only_fields = ("completed_at",)
 
     def get_customer(self, obj):
         return {
@@ -132,3 +132,11 @@ class OrderAdminSerializer(serializers.ModelSerializer):
             }
             for i in obj.items.all()
         ]
+
+    def update(self, instance, validated_data):
+        new_status = validated_data.pop("status", None)
+
+        if new_status and new_status != instance.status:
+            instance.change_status(new_status)
+
+        return super().update(instance, validated_data)

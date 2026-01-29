@@ -8,6 +8,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmed from "./pages/OrderConfirmed";
 import TrackOrder from "./pages/TrackOrder";
 import Contact from "./pages/Contact";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import AboutProject from "./pages/AboutProject";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/order-confirmed/:orderNo" element={<OrderConfirmed />} />
         <Route path="/track" element={<TrackOrder />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
         
         {/* Admin */}
         <Route path="/about-project" element={<AboutProject />} />

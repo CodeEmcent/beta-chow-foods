@@ -1,7 +1,8 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from menu.models import MenuItem
 
-# Create your models here.
 
 class Customer(models.Model):
     full_name = models.CharField(max_length=160)
@@ -13,6 +14,7 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
+    # ---- STATUS CONSTANTS ----
     STATUS_NEW = "NEW"
     STATUS_ACCEPTED = "ACCEPTED"
     STATUS_COOKING = "COOKING"
@@ -29,10 +31,12 @@ class Order(models.Model):
         (STATUS_CANCELLED, "Cancelled"),
     ]
 
+    # ---- ORDER TYPES ----
     TYPE_DELIVERY = "DELIVERY"
     TYPE_PICKUP = "PICKUP"
     TYPE_CHOICES = [(TYPE_DELIVERY, "Delivery"), (TYPE_PICKUP, "Pickup")]
 
+    # ---- PAYMENT ----
     PAYMENT_COD = "PAY_ON_DELIVERY"
     PAYMENT_TRANSFER = "BANK_TRANSFER"
     PAYMENT_CHOICES = [
@@ -42,6 +46,7 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="orders")
     order_no = models.CharField(max_length=20, unique=True)
+
     order_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_DELIVERY)
     delivery_address = models.TextField(blank=True)
     landmark = models.CharField(max_length=200, blank=True)
@@ -56,12 +61,39 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    status_changed_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ["-created_at"]
 
     def __str__(self):
         return self.order_no
+
+    # ---- VALID STATUS FLOW ----
+    STATUS_FLOW = {
+        STATUS_NEW: [STATUS_ACCEPTED, STATUS_CANCELLED],
+        STATUS_ACCEPTED: [STATUS_COOKING, STATUS_CANCELLED],
+        STATUS_COOKING: [STATUS_OUT],
+        STATUS_OUT: [STATUS_COMPLETED],
+    }
+
+    def change_status(self, new_status):
+        if self.status == self.STATUS_COMPLETED:
+            raise ValidationError("Completed orders cannot be changed.")
+
+        allowed = self.STATUS_FLOW.get(self.status, [])
+        if new_status not in allowed:
+            raise ValidationError(
+                f"Invalid status transition: {self.status} → {new_status}"
+            )
+
+        self.status = new_status
+
+        if new_status == self.STATUS_COMPLETED:
+            self.completed_at = timezone.now()
+
+        self.save()
 
 
 class OrderItem(models.Model):

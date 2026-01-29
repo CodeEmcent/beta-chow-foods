@@ -1,7 +1,11 @@
 .track-order {
+  width: 100%;
+  padding: 32px clamp(16px, 4vw, 64px);
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
+
+/* FORM */
 
 .track-form {
   display: flex;
@@ -11,58 +15,101 @@
 
 .track-input {
   flex: 1;
-  min-width: 220px;
+  min-width: 240px;
 }
+
+/* CARD */
 
 .track-card {
-  border: 1px solid #333;
-  border-radius: 14px;
-  padding: 16px;
-  background: #161616;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
+/* META */
+
+.track-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #777;
+  display: block;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #b71c1c;
+}
+
+/* STATUS */
+
+.status {
+  font-weight: 700;
+}
+
+.status.NEW { color: #ff9800; }
+.status.ACCEPTED { color: #4caf50; }
+.status.COOKING { color: #ff9800; }
+.status.OUT_FOR_DELIVERY { color: #03a9f4; }
+.status.COMPLETED { color: #2e7d32; }
+.status.CANCELLED { color: #d32f2f; }
+
+/* ITEMS */
+
 .track-items {
-  padding-left: 18px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
 }
 
 .track-items li {
-  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed #ddd;
+  font-size: 0.95rem;
 }
 
+/* BREAKDOWN */
+
+.track-breakdown {
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.track-breakdown div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.grand-total {
+  margin-top: 6px;
+  font-weight: 800;
+}
+
+/* FEEDBACK */
+
 .error-text {
-  color: tomato;
+  color: #d32f2f;
+  font-weight: 600;
 }
 
 .loading-text {
   opacity: 0.8;
 }
 
-/* Dynamic status colors */
-.status {
-  font-weight: bold;
-}
-
-.status.NEW {
-  color: orange;
-}
-
-.status.ACCEPTED {
-  color: #4caf50;
-}
-
-.status.COOKING {
-  color: #ff9800;
-}
-
-.status.OUT_FOR_DELIVERY {
-  color: #03a9f4;
-}
-
-.status.COMPLETED {
-  color: #8bc34a;
-}
-
-.status.CANCELLED {
-  color: tomato;
+.completed-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #2e7d32;
+  font-weight: 600;
 }

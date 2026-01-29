@@ -23,6 +23,7 @@ export default function NavBar() {
           <NavLink to="/menu">Menu</NavLink>
           <NavLink to="/cart">Cart ({count})</NavLink>
           <NavLink to="/track">Track Order</NavLink>
+          <NavLink to="/about">About Us</NavLink>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
       </div>

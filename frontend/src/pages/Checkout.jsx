@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { createOrder } from "../api/orders";
 import "../styles/Checkout.css";
+import { formatMoney } from "../utils/money";
+
 
 export default function Checkout() {
   const nav = useNavigate();
@@ -191,13 +193,25 @@ export default function Checkout() {
 
         {/* ORDER SUMMARY */}
         <div className="checkout-summary">
-          <p><b>Subtotal:</b> ₦{subtotal.toFixed(2)}</p>
-          <p><b>Delivery Fee:</b> ₦{delivery_fee.toFixed(2)}</p>
-          <p><b>Total:</b> ₦{total.toFixed(2)}</p>
-          <button disabled={loading} className="btn" style={{ width: "100%" }}>
-            {loading ? "Placing order..." : "Place Order"}
-          </button>
-        </div>
+  <div className="summary-row">
+    <span>Subtotal</span>
+    <span>₦{formatMoney(subtotal)}</span>
+  </div>
+
+  <div className="summary-row">
+    <span>Delivery Fee</span>
+    <span>₦{formatMoney(delivery_fee)}</span>
+  </div>
+
+  <div className="summary-row total">
+    <span>Total</span>
+    <span>₦{formatMoney(total)}</span>
+  </div>
+
+  <button disabled={loading} className="btn-primary" style={{ width: "100%" }}>
+    {loading ? "Placing order..." : "Place Order"}
+  </button>
+</div>
 
       </form>
     </div>

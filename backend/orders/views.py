@@ -6,7 +6,8 @@ from django.utils.timezone import now
 from django.db.models import Sum, Count
 from .models import Order
 from .serializers import OrderCreateSerializer, OrderPublicSerializer, OrderAdminSerializer
-
+from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import get_object_or_404
 
 class CreateOrderView(generics.GenericAPIView):
     serializer_class = OrderCreateSerializer
@@ -71,3 +72,17 @@ class SalesSummaryView(APIView):
             "pending_orders": pending_orders,
             "total_revenue": total_revenue,
         })
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def admin_complete_order(request, id):
+    order = get_object_or_404(Order, id=id)
+
+    try:
+        order.change_status(Order.STATUS_COMPLETED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = OrderAdminSerializer(order)
+    return Response(serializer.data)
+

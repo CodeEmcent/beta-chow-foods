@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { trackOrder } from "../api/orders";
 import "../styles/TrackOrder.css";
+import { formatMoney } from "../utils/money";
+
 
 export default function TrackOrder() {
   const [orderNo, setOrderNo] = useState("");
@@ -19,12 +21,23 @@ export default function TrackOrder() {
       setLoading(true);
       const res = await trackOrder(orderNo.trim());
       setData(res);
-    } catch (e2) {
+    } catch {
       setErr("Order not found or invalid order number.");
     } finally {
       setLoading(false);
     }
   }
+
+  // Subtotal from items
+  const subtotal = useMemo(() => {
+    if (!data) return 0;
+    return data.items.reduce(
+      (sum, it) => sum + it.unit_price * it.quantity,
+      0
+    );
+  }, [data]);
+
+  const deliveryFee = data ? data.total - subtotal : 0;
 
   return (
     <div className="track-order">
@@ -34,7 +47,7 @@ export default function TrackOrder() {
         <input
           value={orderNo}
           onChange={(e) => setOrderNo(e.target.value)}
-          placeholder="Enter order number"
+          placeholder="Enter order number (e.g. BC-XXXXXX)"
           className="input track-input"
         />
         <button disabled={loading} className="btn">
@@ -42,30 +55,80 @@ export default function TrackOrder() {
         </button>
       </form>
 
-      {loading && <p className="loading-text">Fetching order details...</p>}
+      {loading && <p className="loading-text">Fetching order details…</p>}
+      {err && <p className="error-text">{err}</p>}
 
-      {err ? <p className="error-text">{err}</p> : null}
-
-      {data ? (
+      {data && (
         <div className="track-card">
-          <p>
-            <b>Status:</b>{" "}
-            <span className={`status ${data.status}`}>
-              {data.status}
-            </span>
+          {/* STATUS + TOTAL */}
+          <div className="track-meta">
+            <div>
+              <span className="label">Status</span>
+              <span className={`status ${data.status}`}>
+                {data.status}
+              </span>
+            </div>
+
+            <div>
+              <span className="label">Total</span>
+              <span className="total">
+                ₦{formatMoney(data.total)}
+              </span>
+            </div>
+          </div>
+
+          {data.status === "COMPLETED" && data.completed_at && (
+  <p className="completed-text">
+    Delivered on{" "}
+    {new Date(data.completed_at).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })}
+  </p>
+)}
+
+          {/* ORDER TYPE */}
+          <p className="order-type">
+            <b>Order Type:</b> {data.order_type}
           </p>
-          <p><b>Order Type:</b> {data.order_type}</p>
-          <p><b>Total:</b> ₦{data.total}</p>
+
+          {/* ITEMS */}
           <h3>Items</h3>
           <ul className="track-items">
             {data.items.map((it, idx) => (
               <li key={idx}>
-                {it.name} x{it.quantity} — ₦{it.unit_price}
+                <span>
+                  {it.name} × {it.quantity}
+                </span>
+                <span>
+                  ₦{formatMoney(it.unit_price * it.quantity)}
+                </span>
               </li>
             ))}
           </ul>
+
+          {/* BREAKDOWN */}
+          <div className="track-breakdown">
+            <div>
+              <span>Subtotal</span>
+              <span>₦{formatMoney(subtotal)}</span>
+            </div>
+
+            <div>
+              <span>Delivery Fee</span>
+              <span>₦{formatMoney(deliveryFee)}</span>
+            </div>
+
+            <div className="grand-total">
+              <span>Total Paid</span>
+              <span>₦{formatMoney(data.total)}</span>
+            </div>
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

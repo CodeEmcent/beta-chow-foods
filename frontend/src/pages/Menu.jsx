@@ -3,13 +3,8 @@ import { fetchCategories, fetchMenuItems } from "../api/menu";
 import { useCart } from "../context/CartContext";
 import Loading from "../components/Loading";
 import "../styles/Menu.css";
+import { formatMoney } from "../utils/money";
 
-// ✅ Money formatter (NGN with commas + 2 decimals)
-const formatMoney = (amount) =>
-  amount.toLocaleString("en-NG", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
 export default function Menu() {
   const { addToCart } = useCart();
