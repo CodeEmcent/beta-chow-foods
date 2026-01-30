@@ -1,8 +1,9 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
-export default function Layout({ children }) {
+export default function Layout() {
   return (
     <div
       style={{
@@ -24,7 +25,7 @@ export default function Layout({ children }) {
           padding: 0,
         }}
       >
-        {children}
+        <Outlet />
       </main>
 
       <Footer />

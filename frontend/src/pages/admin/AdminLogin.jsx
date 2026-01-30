@@ -29,6 +29,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login">
       <h1>Admin Login</h1>
+      <p class="admin-subtitle">Internal Management Portal</p>
 
       {err && <p className="admin-login-error">{err}</p>}
 

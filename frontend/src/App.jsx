@@ -1,6 +1,9 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
+
+/* Public layout */
 import Layout from "./components/Layout";
+
+/* Public pages */
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
@@ -9,19 +12,21 @@ import OrderConfirmed from "./pages/OrderConfirmed";
 import TrackOrder from "./pages/TrackOrder";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
-import NotFound from "./pages/NotFound";
 import AboutProject from "./pages/AboutProject";
+import NotFound from "./pages/NotFound";
+
+/* Admin */
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
-import "./App.css";
-
-
+import AdminLayout from "./layouts/AdminLayout";
 
 export default function App() {
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      {/* PUBLIC SITE */}
+      <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
@@ -30,15 +35,24 @@ export default function App() {
         <Route path="/track" element={<TrackOrder />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
-        
-        {/* Admin */}
         <Route path="/about-project" element={<AboutProject />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
-        
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Layout>
+      </Route>
+
+      {/* ADMIN LOGIN (no public layout) */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
+      {/* ADMIN WORKSPACE */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+
+        <Route path="orders">
+          <Route index element={<AdminOrders />} />
+          <Route path=":id" element={<AdminOrderDetail />} />
+        </Route>
+      </Route>
+
+      {/* FALLBACK */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }

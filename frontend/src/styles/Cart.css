@@ -104,6 +104,23 @@
   font-weight: 800;
 }
 
+.empty-cart-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f4b400, #e0a800);
+  color: #1a1a1a;
+  font-weight: 800;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.empty-cart-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(244, 180, 0, 0.45);
+}
+
 /* SUMMARY */
 
 .cart-summary {
@@ -111,6 +128,34 @@
   padding-top: 16px;
   display: grid;
   gap: 12px;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #f4b400, #e0a800);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.checkout-btn:hover {
+  background: linear-gradient(135deg, #e0a800, #f4b400);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(244, 180, 0, 0.45);
+}
+
+.checkout-btn:active {
+  transform: translateY(0);
+}
+
+.checkout-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .whatsapp-btn {

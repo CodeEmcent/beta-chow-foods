@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { trackOrder } from "../api/orders";
-import "../styles/TrackOrder.css";
 import { formatMoney } from "../utils/money";
+import "../styles/TrackOrder.css";
 
 
 export default function TrackOrder() {
@@ -48,9 +49,9 @@ export default function TrackOrder() {
           value={orderNo}
           onChange={(e) => setOrderNo(e.target.value)}
           placeholder="Enter order number (e.g. BC-XXXXXX)"
-          className="input track-input"
+          className="track-order-input"
         />
-        <button disabled={loading} className="btn">
+        <button disabled={loading} className="track-order-btn">
           {loading ? "Tracking..." : "Track"}
         </button>
       </form>
@@ -59,75 +60,89 @@ export default function TrackOrder() {
       {err && <p className="error-text">{err}</p>}
 
       {data && (
-        <div className="track-card">
-          {/* STATUS + TOTAL */}
-          <div className="track-meta">
-            <div>
-              <span className="label">Status</span>
-              <span className={`status ${data.status}`}>
-                {data.status}
-              </span>
+        <>
+          {/* ORDER REPORT (READ-ONLY) */}
+          <div className="track-card">
+            {/* STATUS + TOTAL */}
+            <div className="track-meta">
+              <div>
+                <span className="label">Status</span>
+                <span className={`status ${data.status}`}>
+                  {data.status}
+                </span>
+              </div>
+
+              <div>
+                <span className="label">Total</span>
+                <span className="total">
+                  ₦{formatMoney(data.total)}
+                </span>
+              </div>
             </div>
 
-            <div>
-              <span className="label">Total</span>
-              <span className="total">
-                ₦{formatMoney(data.total)}
-              </span>
+            {data.status === "COMPLETED" && data.completed_at && (
+              <p className="completed-text">
+                Delivered on{" "}
+                {new Date(data.completed_at).toLocaleString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            )}
+
+            {/* ORDER TYPE */}
+            <p className="order-type">
+              <b>Order Type:</b> {data.order_type}
+            </p>
+
+            {/* ITEMS */}
+            <h3>Items</h3>
+            <ul className="track-items">
+              {data.items.map((it, idx) => (
+                <li key={idx}>
+                  <span>
+                    {it.name} × {it.quantity}
+                  </span>
+                  <span>
+                    ₦{formatMoney(it.unit_price * it.quantity)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {/* BREAKDOWN */}
+            <div className="track-breakdown">
+              <div>
+                <span>Subtotal</span>
+                <span>₦{formatMoney(subtotal)}</span>
+              </div>
+
+              <div>
+                <span>Delivery Fee</span>
+                <span>₦{formatMoney(deliveryFee)}</span>
+              </div>
+
+              <div className="grand-total">
+                <span>Total Paid</span>
+                <span>₦{formatMoney(data.total)}</span>
+              </div>
             </div>
           </div>
 
-          {data.status === "COMPLETED" && data.completed_at && (
-  <p className="completed-text">
-    Delivered on{" "}
-    {new Date(data.completed_at).toLocaleString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })}
-  </p>
-)}
+          {/* NEXT ACTIONS (SEPARATE SECTION) */}
+          <div className="track-actions">
+            <Link to="/menu" className="primary-action-btn">
+              Order Again
+            </Link>
 
-          {/* ORDER TYPE */}
-          <p className="order-type">
-            <b>Order Type:</b> {data.order_type}
-          </p>
-
-          {/* ITEMS */}
-          <h3>Items</h3>
-          <ul className="track-items">
-            {data.items.map((it, idx) => (
-              <li key={idx}>
-                <span>
-                  {it.name} × {it.quantity}
-                </span>
-                <span>
-                  ₦{formatMoney(it.unit_price * it.quantity)}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {/* BREAKDOWN */}
-          <div className="track-breakdown">
-            <div>
-              <span>Subtotal</span>
-              <span>₦{formatMoney(subtotal)}</span>
-            </div>
-
-            <div>
-              <span>Delivery Fee</span>
-              <span>₦{formatMoney(deliveryFee)}</span>
-            </div>
-
-            <div className="grand-total">
-              <span>Total Paid</span>
-              <span>₦{formatMoney(data.total)}</span>
-            </div>
+            <Link to="/" className="secondary-action-btn">
+              Go to Home
+            </Link>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

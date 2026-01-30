@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchAllOrders } from "../../api/admin";
 import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "../../api/client";
+import { formatMoney } from "../../utils/money";
 import "../../styles/admin.css";
 
 export default function AdminDashboard() {
@@ -70,10 +71,22 @@ export default function AdminDashboard() {
         <p className="loading-text">Loading summary...</p>
       ) : summary && (
         <div className="admin-summary">
-          <div>Today Orders: <span>{summary.total_orders}</span></div>
-          <div>Completed: <span>{summary.completed_orders}</span></div>
-          <div>Pending: <span>{summary.pending_orders}</span></div>
-          <div>Revenue: <span>₦{summary.total_revenue}</span></div>
+          <div className="summary-card orders">
+            <p className="summary-label">Today Orders</p>
+            <p className="summary-value">{summary.total_orders}</p>
+          </div>
+          <div className="summary-card completed">
+            <p className="summary-label">Completed</p>
+            <p className="summary-value">{summary.completed_orders}</p>
+          </div>
+          <div className="summary-card pending">
+            <p className="summary-label">Pending</p>
+            <p className="summary-value">{summary.pending_orders}</p>
+          </div>
+          <div className="summary-card revenue">
+            <p className="summary-label">Revenue</p>
+            <p className="summary-value">₦{formatMoney(Number(summary.total_revenue))}</p>
+          </div>
         </div>
       )}
 
@@ -101,9 +114,11 @@ export default function AdminDashboard() {
           ) : (
             orders.map((o) => (
               <div key={o.id} className="admin-order-card">
-                <p>
-                  <b>{o.order_no}</b> — {o.status} — ₦{o.total}
-                </p>
+                <div className="order-info">
+                <span className="order-no">{o.order_no}:</span>
+                <span className="order-status new">{o.status}</span>
+                <span className="order-total">₦{formatMoney(o.total)}</span>
+              </div>
                 <Link className="view-link" to={`/admin/orders/${o.id}`}>
                   View
                 </Link>
@@ -112,6 +127,12 @@ export default function AdminDashboard() {
           )}
         </div>
       )}
+
+      <div className="dashboard-footer">
+        <Link to="/admin/orders" className="view-all-link">
+          View all orders →
+        </Link>
+      </div>
     </div>
   );
 }

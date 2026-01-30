@@ -111,8 +111,8 @@ export default function OrderConfirmed() {
       )}
 
       <div className="order-actions">
-        <Link to="/menu" className="btn">Order Again</Link>
-        <Link to="/track" className="btn">Track Order</Link>
+        <Link to="/menu" className="order-again-btn">Order Again</Link>
+        <Link to="/track" className="track-order-btn">Track Order</Link>
       </div>
     </div>
   );

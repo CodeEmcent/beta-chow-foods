@@ -32,7 +32,7 @@ export default function Cart() {
       <div className="cart-page">
         <h1>Your Cart</h1>
         <p>Your cart is empty.</p>
-        <Link to="/menu" className="btn">
+        <Link to="/menu" className="empty-cart-btn">
           Go to Menu
         </Link>
       </div>
@@ -104,8 +104,7 @@ export default function Cart() {
         {/* Normal checkout */}
         <button
           onClick={() => nav("/checkout")}
-          className="btn"
-          style={{ width: "100%" }}
+          className="checkout-btn"
         >
           Proceed to Checkout
         </button>

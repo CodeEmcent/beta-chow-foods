@@ -100,6 +100,37 @@
   flex-wrap: wrap;
 }
 
+.order-again-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f4b400, #e0a800);
+  color: #1a1a1a;
+  font-weight: 800;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.order-again-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(244, 180, 0, 0.45);
+}
+
+.track-order-btn {
+  padding: 12px 20px;
+  border: 2px solid #1b5e20;
+  color: #1b5e20;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.track-order-btn:hover {
+  background: #1b5e20;
+  color: #fff;
+}
+
 /* ERROR */
 
 .error-text {
