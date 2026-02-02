@@ -1,21 +1,23 @@
 export const API_BASE = "http://127.0.0.1:8000/api";
 
-export async function apiFetch(path, options = {}) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+export async function apiFetch(url, options = {}) {
+  const headers = {
+    ...(options.headers || {}),
+  };
+
+  if (options.body && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const res = await fetch(`${API_BASE}${url}`, {
     ...options,
+    headers,
   });
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `Request failed: ${res.status}`);
+    throw new Error(text);
   }
 
-  // Some endpoints may return empty body
-  const contentType = res.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) return res.json();
-  return null;
+  return res.json();
 }

@@ -1,19 +1,21 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from .models import Category, MenuItem
 from .serializers import CategorySerializer, MenuItemSerializer
 
 
-class CategoryListView(generics.ListAPIView):
+class CategoryListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
-class MenuItemListView(generics.ListAPIView):
+class MenuItemListCreateView(generics.ListCreateAPIView):
+    queryset = MenuItem.objects.select_related("category").all()
     serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAdminUser]
 
-    def get_queryset(self):
-        qs = MenuItem.objects.select_related("category").filter(is_available=True)
-        category_id = self.request.query_params.get("category")
-        if category_id:
-            qs = qs.filter(category_id=category_id)
-        return qs
+
+class MenuItemDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAdminUser]

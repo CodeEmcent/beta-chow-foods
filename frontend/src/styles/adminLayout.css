@@ -1,4 +1,6 @@
 .admin-layout {
+  position: relative;
+  isolation: isolate;
   display: flex;
   min-height: 100vh;
   background: #f9fafb;
@@ -11,6 +13,27 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+}
+
+.admin-main {
+  padding: 32px;
+  max-width: none;
+  flex: 1;
+  padding: 32px;
+  background: #f9fafb;
+}
+
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.admin-topbar h1 {
+  font-size: 1.8rem;
+  color: #14532d;
 }
 
 .admin-logo {
@@ -46,7 +69,25 @@
   cursor: pointer;
 }
 
-.admin-main {
-  flex: 1;
-  padding: 32px;
+@media (max-width: 900px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .admin-nav {
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .admin-main {
+    padding: 20px;
+  }
 }

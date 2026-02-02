@@ -12,6 +12,8 @@ export default function AdminDashboard() {
   const [status, setStatus] = useState("");
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(true);
+  const [sortKey, setSortKey] = useState("date");
+  const [sortDir, setSortDir] = useState("desc");
 
   const token = localStorage.getItem("admin_token");
 
@@ -52,6 +54,15 @@ export default function AdminDashboard() {
       .finally(() => setLoadingOrders(false));
   }, [token, status, navigate]);
 
+  function sortBy(key) {
+    if (sortKey === key) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  }
+
   function logout() {
     localStorage.removeItem("admin_token");
     navigate("/admin/login");
@@ -59,12 +70,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-dashboard">
-      <div className="admin-header">
-        <h1>Admin Dashboard</h1>
-        <button className="logout-btn" onClick={logout}>
-          Logout
-        </button>
-      </div>
 
       {/* SUMMARY */}
       {loadingSummary ? (
@@ -107,24 +112,52 @@ export default function AdminDashboard() {
       {/* ORDERS LIST */}
       {loadingOrders ? (
         <p className="loading-text">Loading orders...</p>
+      ) : orders.length === 0 ? (
+        <p className="empty-text">No orders found.</p>
       ) : (
-        <div className="admin-orders">
-          {orders.length === 0 ? (
-            <p className="empty-text">No orders found.</p>
-          ) : (
-            orders.map((o) => (
-              <div key={o.id} className="admin-order-card">
-                <div className="order-info">
-                <span className="order-no">{o.order_no}:</span>
-                <span className="order-status new">{o.status}</span>
-                <span className="order-total">₦{formatMoney(o.total)}</span>
-              </div>
-                <Link className="view-link" to={`/admin/orders/${o.id}`}>
-                  View
-                </Link>
-              </div>
-            ))
-          )}
+        <div className="admin-orders-table-wrapper">
+          <table className="admin-orders-table">
+            <thead>
+              <tr>
+                <th onClick={() => sortBy("order_no")}>Order No</th>
+                <th onClick={() => sortBy("status")}>Status</th>
+                <th onClick={() => sortBy("total")}>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...orders]
+                .sort((a, b) => {
+                  const valA = a[sortKey];
+                  const valB = b[sortKey];
+
+                  if (typeof valA === "number") {
+                    return sortDir === "asc" ? valA - valB : valB - valA;
+                  }
+                  return sortDir === "asc"
+                    ? String(valA).localeCompare(String(valB))
+                    : String(valB).localeCompare(String(valA));
+                })
+                .map((o) => (
+                  <tr key={o.id}>
+                    <td className="order-no">{o.order_no}</td>
+                    <td>
+                      <span className={`order-status ${o.status.toLowerCase()}`}>
+                        {o.status}
+                      </span>
+                    </td>
+                    <td className="order-total">
+                      ₦{formatMoney(o.total)}
+                    </td>
+                    <td>
+                      <Link to={`/admin/orders/${o.id}`} className="view-link">
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       )}
 

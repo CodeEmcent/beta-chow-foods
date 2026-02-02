@@ -19,6 +19,9 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrders from "./pages/admin/AdminOrders";
+import AdminMenu from "./pages/admin/AdminMenu";
+import AdminCustomers from "./pages/admin/AdminCustomers";
+import AdminSettings from "./pages/admin/AdminSettings";
 import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -49,6 +52,10 @@ export default function App() {
           <Route index element={<AdminOrders />} />
           <Route path=":id" element={<AdminOrderDetail />} />
         </Route>
+
+        <Route path="menu" element={<AdminMenu />} />
+        <Route path="customers" element={<AdminCustomers />} />
+        <Route path="settings" element={<AdminSettings />} />
       </Route>
 
       {/* FALLBACK */}
