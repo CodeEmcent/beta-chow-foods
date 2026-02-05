@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 /* Public layout */
 import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
 
 /* Public pages */
 import Home from "./pages/Home";
@@ -14,6 +15,8 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import AboutProject from "./pages/AboutProject";
 import NotFound from "./pages/NotFound";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 /* Admin */
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -33,12 +36,14 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmed/:orderNo" element={<OrderConfirmed />} />
-        <Route path="/track" element={<TrackOrder />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/about-project" element={<AboutProject />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>}/>
+        <Route path="/track" element={<RequireAuth><TrackOrder /></RequireAuth>}/>
       </Route>
 
       {/* ADMIN LOGIN (no public layout) */}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -20,6 +21,11 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.URLField(blank=True)  # quick MVP (later use ImageField)
     is_available = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    stock_mode = models.CharField(max_length=20, choices=[("unlimited","Unlimited"),("limited","Limited")], default="unlimited")
+    stock_qty = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["category__sort_order", "name"]
@@ -27,3 +33,4 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"
+

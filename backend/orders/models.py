@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from menu.models import MenuItem
+from django.conf import settings
 
 
 class Customer(models.Model):
@@ -44,6 +45,7 @@ class Order(models.Model):
         (PAYMENT_TRANSFER, "Bank transfer"),
     ]
 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="orders")
     order_no = models.CharField(max_length=20, unique=True)
 

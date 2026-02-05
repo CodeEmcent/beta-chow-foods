@@ -1,9 +1,7 @@
 export const API_BASE = "http://127.0.0.1:8000/api";
 
 export async function apiFetch(url, options = {}) {
-  const headers = {
-    ...(options.headers || {}),
-  };
+  const headers = { ...(options.headers || {}) };
 
   if (options.body && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
@@ -15,9 +13,9 @@ export async function apiFetch(url, options = {}) {
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text);
+    throw new Error(await res.text());
   }
 
+  if (res.status === 204) return null;
   return res.json();
 }

@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.utils.timezone import now
 from django.db.models import Sum, Count
 from .models import Order
@@ -15,8 +15,15 @@ class CreateOrderView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
-        order = ser.save()
-        return Response({"order_no": order.order_no}, status=status.HTTP_201_CREATED)
+
+        order = ser.save(
+            user=request.user if request.user.is_authenticated else None
+        )
+
+        return Response(
+            {"order_no": order.order_no},
+            status=status.HTTP_201_CREATED
+        )
 
 
 class TrackOrderView(generics.RetrieveAPIView):
@@ -28,7 +35,7 @@ class TrackOrderView(generics.RetrieveAPIView):
 class AdminOrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderAdminSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         qs = Order.objects.all()

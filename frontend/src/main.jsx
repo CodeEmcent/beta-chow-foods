@@ -5,6 +5,7 @@ import App from "./App";
 import { CartProvider } from "./context/CartContext";
 import "./index.css";
 import "./App.css";
+import "./styles/auth.css";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
