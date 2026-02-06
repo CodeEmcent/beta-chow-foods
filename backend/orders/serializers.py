@@ -37,6 +37,12 @@ class OrderCreateSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
+        request = self.context.get("request")
+        user = None
+
+        if request and request.user.is_authenticated:
+            user = request.user
+
         items_data = validated_data.pop("items")
         delivery_fee = Decimal(validated_data.pop("delivery_fee", "0"))
 
@@ -47,6 +53,7 @@ class OrderCreateSerializer(serializers.Serializer):
         )
 
         order = Order.objects.create(
+            user=user,  # ✅ LINK TO LOGGED-IN USER
             customer=customer,
             order_no=generate_order_no(),
             order_type=validated_data["order_type"],
@@ -58,10 +65,12 @@ class OrderCreateSerializer(serializers.Serializer):
         )
 
         subtotal = Decimal("0")
+
         for it in items_data:
             menu_item = MenuItem.objects.get(id=it["menu_item_id"])
             unit_price = Decimal(str(menu_item.price))
             qty = int(it["quantity"])
+
             subtotal += unit_price * qty
 
             OrderItem.objects.create(
@@ -140,3 +149,29 @@ class OrderAdminSerializer(serializers.ModelSerializer):
             instance.change_status(new_status)
 
         return super().update(instance, validated_data)
+
+
+class CustomerOrderHistorySerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "order_no",
+            "status",
+            "order_type",
+            "total",
+            "created_at",
+            "items",
+        ]
+
+    def get_items(self, obj):
+        return [
+            {
+                "name": i.menu_item.name,
+                "quantity": i.quantity,
+                "unit_price": str(i.unit_price),
+            }
+            for i in obj.items.all()
+        ]

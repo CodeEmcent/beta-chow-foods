@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from accounts.auth import CustomTokenSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class CustomTokenView(TokenObtainPairView):

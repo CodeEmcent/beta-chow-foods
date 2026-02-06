@@ -5,20 +5,20 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.utils.timezone import now
 from django.db.models import Sum, Count
 from .models import Order
-from .serializers import OrderCreateSerializer, OrderPublicSerializer, OrderAdminSerializer
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
+from .serializers import ( 
+    OrderCreateSerializer, OrderPublicSerializer, 
+    OrderAdminSerializer, CustomerOrderHistorySerializer
+)
 
 class CreateOrderView(generics.GenericAPIView):
     serializer_class = OrderCreateSerializer
 
     def post(self, request, *args, **kwargs):
-        ser = self.get_serializer(data=request.data)
+        ser = self.get_serializer(data=request.data, context={"request": request})
         ser.is_valid(raise_exception=True)
-
-        order = ser.save(
-            user=request.user if request.user.is_authenticated else None
-        )
+        order = ser.save()
 
         return Response(
             {"order_no": order.order_no},
@@ -93,3 +93,17 @@ def admin_complete_order(request, id):
     serializer = OrderAdminSerializer(order)
     return Response(serializer.data)
 
+class CustomerOrderHistoryView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CustomerOrderHistorySerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).order_by("-created_at")
+
+
+class CustomerOrderDetailView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderPublicSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)

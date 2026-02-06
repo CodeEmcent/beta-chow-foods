@@ -13,7 +13,6 @@ class CustomerSerializer(serializers.ModelSerializer):
             "date_joined",
         ]
 
-
 class CustomerSignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -28,15 +27,23 @@ class CustomerSignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         email = validated_data["email"]
+
         user = User.objects.create_user(
-            username=email,          # ✅ IMPORTANT
+            username=email,  # important
             email=email,
             password=validated_data["password"],
             first_name=validated_data.get("first_name", ""),
             last_name=validated_data.get("last_name", ""),
         )
+
         user.is_staff = False
         user.is_superuser = False
+        user.is_active = True  # ✅ IMPORTANT FIX
         user.save()
+
         return user
 
+class CustomerProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "phone"]

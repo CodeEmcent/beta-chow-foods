@@ -104,14 +104,29 @@
 }
 
 /* BUTTONS */
-
-.btn-primary {
+.menu-add-btn {
   margin-top: auto;
   padding: 10px;
   border-radius: 10px;
   font-weight: 600;
+
   background: var(--green-dark);
   color: #fff;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.menu-add-btn:hover {
+  background: var(--gold);
+  color: var(--green-dark);
+  transform: translateY(-2px);
 }
 
 /* IMAGES */

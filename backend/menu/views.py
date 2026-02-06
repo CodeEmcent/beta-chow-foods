@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -77,3 +78,20 @@ class MenuItemBulkActionView(APIView):
             return Response({"error": "Invalid action"}, status=400)
 
         return Response({"status": "ok"})
+    
+
+class PublicCategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+
+
+class PublicMenuItemListView(generics.ListAPIView):
+    serializer_class = MenuItemSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return MenuItem.objects.select_related("category").filter(
+            is_deleted=False,
+            is_available=True
+        )

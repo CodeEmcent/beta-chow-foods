@@ -2,8 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { fetchCategories, fetchMenuItems } from "../api/menu";
 import { useCart } from "../context/CartContext";
 import Loading from "../components/Loading";
-import "../styles/Menu.css";
 import { formatMoney } from "../utils/money";
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../utils/auth";
+import "../styles/Menu.css";
+
 
 
 export default function Menu() {
@@ -13,6 +16,8 @@ export default function Menu() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const navigate = useNavigate();
+
 
   // Fetch categories on load
   useEffect(() => {
@@ -101,12 +106,16 @@ export default function Menu() {
                 <p className="menu-price">₦{formatMoney(Number(it.price))}</p>
 
                 <button
-                  className="btn-primary"
+                  className="menu-add-btn"
                   onClick={() => {
+                    if (!isLoggedIn()) {
+                      navigate("/login", { state: { from: "/menu" } });
+                      return;
+                    }
+
                     addToCart(it, 1);
                     alert(`${it.name} added to cart`);
                   }}
-
                 >
                   Add to Cart
                 </button>

@@ -3,6 +3,11 @@ export const API_BASE = "http://127.0.0.1:8000/api";
 export async function apiFetch(url, options = {}) {
   const headers = { ...(options.headers || {}) };
 
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   if (options.body && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
   }
@@ -11,6 +16,13 @@ export async function apiFetch(url, options = {}) {
     ...options,
     headers,
   });
+
+  if (res.status === 401) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    window.location.href = "/login";
+    return;
+  }
 
   if (!res.ok) {
     throw new Error(await res.text());

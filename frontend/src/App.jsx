@@ -17,6 +17,10 @@ import AboutProject from "./pages/AboutProject";
 import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import MyOrders from "./pages/MyOrders";
+import MyOrderDetail from "./pages/MyOrderDetail";
+import Profile from "./pages/Profile";
+
 
 /* Admin */
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -40,10 +44,14 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/about-project" element={<AboutProject />} />
+        {/* Customer WORKSPACE */}
+        <Route path="/track" element={<TrackOrder />}/>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>}/>
-        <Route path="/track" element={<RequireAuth><TrackOrder /></RequireAuth>}/>
+        <Route path="/my-orders" element={<RequireAuth><MyOrders /></RequireAuth>} />
+        <Route path="/my-orders/:id" element={<RequireAuth><MyOrderDetail /></RequireAuth>} />
+        <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
       </Route>
 
       {/* ADMIN LOGIN (no public layout) */}

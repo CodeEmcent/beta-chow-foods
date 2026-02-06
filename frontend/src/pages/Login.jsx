@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { loginCustomer } from "../api/auth";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from || "/";
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -18,7 +23,8 @@ export default function Login() {
       .then((res) => {
         localStorage.setItem("access_token", res.access);
         localStorage.setItem("refresh_token", res.refresh);
-        window.location.href = "/";
+
+        window.location.href = from;
       })
       .catch(() => {
         setError("Invalid email or password");
@@ -59,8 +65,8 @@ export default function Login() {
             />
           </div>
 
-          <button type="submit" className="auth-btn">
-            Login
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
