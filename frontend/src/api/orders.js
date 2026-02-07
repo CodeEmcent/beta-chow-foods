@@ -20,3 +20,18 @@ export function fetchMyOrders() {
 export function fetchMyOrderDetail(id) {
   return apiFetch(`/orders/my/${id}/`);
 }
+
+export async function createWhatsAppOrder(payload) {
+  const res = await fetch("http://127.0.0.1:8000/api/orders/whatsapp/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.detail || "Failed to create WhatsApp order");
+  }
+
+  return res.json(); // { order_no, whatsapp_url, message }
+}

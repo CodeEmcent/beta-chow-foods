@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from accounts.auth import CustomTokenSerializer
 
@@ -23,3 +25,5 @@ urlpatterns = [
     path("api/orders/", include("orders.urls")),
     path("api/inventory/", include("inventory.urls")),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

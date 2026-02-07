@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -18,6 +19,7 @@ class MenuItemListCreateView(generics.ListCreateAPIView):
     queryset = MenuItem.objects.select_related("category").filter(is_deleted=False)
     serializer_class = MenuItemSerializer
     permission_classes = [permissions.IsAdminUser]
+    parser_classes = [MultiPartParser, FormParser]
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["category", "is_available"]
@@ -39,7 +41,6 @@ class MenuItemDetailView(generics.RetrieveUpdateDestroyAPIView):
         obj.is_available = False
         obj.save(update_fields=["is_deleted", "deleted_at", "is_available"])
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class MenuItemBulkActionView(APIView):
@@ -91,7 +92,14 @@ class PublicMenuItemListView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return MenuItem.objects.select_related("category").filter(
+        qs = MenuItem.objects.select_related("category").filter(
             is_deleted=False,
             is_available=True
         )
+
+        category_id = self.request.query_params.get("category_id")
+        if category_id:
+            qs = qs.filter(category_id=category_id)
+
+        return qs
+

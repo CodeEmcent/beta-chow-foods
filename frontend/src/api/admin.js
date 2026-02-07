@@ -33,11 +33,38 @@ export const fetchMenu = (token, qs = "") =>
 export const fetchCategories = (token) =>
   apiFetch(`/menu/categories/`, { headers: { Authorization: `Bearer ${token}` } });
 
-export const createMenuItem = (token, data) =>
-  apiFetch(`/menu/items/`, { method:"POST", headers:{ Authorization:`Bearer ${token}` }, body: JSON.stringify(data) });
+export const createMenuItem = async (token, formData) => {
+  const res = await fetch(`http://127.0.0.1:8000/api/menu/items/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // DO NOT SET Content-Type when using FormData
+    },
+    body: formData,
+  });
 
-export const updateMenuItem = (token, id, data) =>
-  apiFetch(`/menu/items/${id}/`, { method:"PATCH", headers:{ Authorization:`Bearer ${token}` }, body: JSON.stringify(data) });
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return res.json();
+};
+
+export const updateMenuItem = async (token, id, formData) => {
+  const res = await fetch(`http://127.0.0.1:8000/api/menu/items/${id}/`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return res.json();
+};
 
 export const deleteMenuItem = (token, id) =>
   apiFetch(`/menu/items/${id}/`, { method:"DELETE", headers:{ Authorization:`Bearer ${token}` } });

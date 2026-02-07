@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import MyOrders from "./pages/MyOrders";
 import MyOrderDetail from "./pages/MyOrderDetail";
 import Profile from "./pages/Profile";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
 
 
 /* Admin */
@@ -66,6 +67,7 @@ export default function App() {
           <Route path=":id" element={<AdminOrderDetail />} />
         </Route>
 
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="menu" element={<AdminMenu />} />
         <Route path="customers" element={<AdminCustomers />} />
         <Route path="settings" element={<AdminSettings />} />

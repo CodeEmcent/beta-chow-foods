@@ -5,6 +5,6 @@ export function fetchCategories() {
 }
 
 export function fetchMenuItems(categoryId) {
-  const q = categoryId ? `?category=${categoryId}` : "";
+  const q = categoryId ? `?category_id=${categoryId}` : "";
   return apiFetch(`/menu/public/items/${q}`);
 }

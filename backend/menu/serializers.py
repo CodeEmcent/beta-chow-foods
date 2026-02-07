@@ -15,16 +15,16 @@ class MenuItemSerializer(serializers.ModelSerializer):
     )
     category = CategorySerializer(read_only=True)
 
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = MenuItem
-        fields = [
-            "id",
-            "category",
-            "category_id",
-            "name",
-            "description",
-            "price",
-            "image_url",
-            "is_available",
-        ]
+        fields = "__all__"
+
+    def get_image_url(self, obj):
+        request = self.context.get("request")
+        if obj.image and request:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+
 

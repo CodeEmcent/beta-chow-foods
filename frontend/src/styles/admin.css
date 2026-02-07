@@ -342,7 +342,7 @@
 
 .menu-form {
   display: grid;
-  grid-template-columns: 180px 1fr 140px auto;
+  grid-template-columns: 180px 1fr 140px 1.5fr 1.5fr auto;
   gap: 12px;
   margin-bottom: 24px;
 }

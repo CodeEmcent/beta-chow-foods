@@ -11,7 +11,7 @@ export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const from = location.state?.from || "/";
+  const from = location.state?.from || "/menu";
 
   function handleSubmit(e) {
     e.preventDefault();

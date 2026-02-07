@@ -1,16 +1,18 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.utils.timezone import now
 from django.db.models import Sum, Count
-from .models import Order
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
+from .models import Order
 from .serializers import ( 
     OrderCreateSerializer, OrderPublicSerializer, 
     OrderAdminSerializer, CustomerOrderHistorySerializer
 )
+from .analytics import get_admin_analytics
+from django.conf import settings
 
 class CreateOrderView(generics.GenericAPIView):
     serializer_class = OrderCreateSerializer
@@ -57,7 +59,7 @@ class AdminOrderDetailView(generics.RetrieveUpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderAdminSerializer
     lookup_field = "id"
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class SalesSummaryView(APIView):
@@ -107,3 +109,78 @@ class CustomerOrderDetailView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
+
+
+class AdminAnalyticsDashboardView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        return Response(get_admin_analytics())
+
+
+class WhatsAppOrderCreateView(APIView):
+    """
+    Creates a real Order in the DB, then returns:
+    - order_no
+    - whatsapp_url (pre-filled message)
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        payload = request.data.copy()
+
+        # Defaults for WhatsApp flow (so it works even without checkout form)
+        payload.setdefault("payment_method", Order.PAYMENT_COD)
+
+        # If user didn’t choose, use PICKUP (because DELIVERY requires address)
+        payload.setdefault("order_type", Order.TYPE_PICKUP)
+
+        serializer = OrderCreateSerializer(data=payload, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+
+        # Build a WhatsApp message (business number should come from settings)
+        # Example: WHATSAPP_BUSINESS_NUMBER="2348012345678"
+        business_number = getattr(settings, "WHATSAPP_BUSINESS_NUMBER", "")
+        message_lines = [
+            "Hello Beta Chow Foods,",
+            "I would like to place an order:",
+            "",
+        ]
+
+        # Add items summary (serializer saved items)
+        for item in order.items.all():
+            message_lines.append(f"- {item.menu_item.name} x{item.quantity}")
+
+        message_lines += [
+            "",
+            f"Order No: {order.order_no}",
+            f"Order Type: {order.order_type}",
+        ]
+
+        if order.delivery_address:
+            message_lines.append(f"Delivery Address: {order.delivery_address}")
+        if order.landmark:
+            message_lines.append(f"Landmark: {order.landmark}")
+
+        message_lines += [
+            "",
+            "Thank you!",
+        ]
+
+        message = "\n".join(message_lines)
+
+        # WhatsApp click-to-chat URL
+        # IMPORTANT: WhatsApp expects number with country code and no +
+        import urllib.parse
+        encoded = urllib.parse.quote(message)
+        whatsapp_url = f"https://wa.me/{business_number}?text={encoded}" if business_number else ""
+
+        return Response(
+            {
+                "order_no": order.order_no,
+                "whatsapp_url": whatsapp_url,
+                "message": message,  # optional (helps debugging)
+            },
+            status=status.HTTP_201_CREATED,
+        )

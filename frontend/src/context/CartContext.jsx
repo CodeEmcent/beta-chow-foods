@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { loadCart, saveCart, clearCart } from "../utils/storage";
+import { loadCart, saveCart, clearCart as clearCartStorage } from "../utils/storage";
 
 const CartContext = createContext(null);
 
@@ -12,12 +12,16 @@ export function CartProvider({ children }) {
 
   function addToCart(item, qty = 1, notes = "") {
     setCart((prev) => {
-      const found = prev.find((x) => x.id === item.id && (x.notes || "") === (notes || ""));
+      const found = prev.find(
+        (x) => x.id === item.id && (x.notes || "") === (notes || "")
+      );
+
       if (found) {
         return prev.map((x) =>
           x === found ? { ...x, quantity: x.quantity + qty } : x
         );
       }
+
       return [
         ...prev,
         {
@@ -38,13 +42,16 @@ export function CartProvider({ children }) {
 
   function setQty(index, quantity) {
     setCart((prev) =>
-      prev.map((x, i) => (i === index ? { ...x, quantity: Math.max(1, quantity) } : x))
+      prev.map((x, i) =>
+        i === index ? { ...x, quantity: Math.max(1, quantity) } : x
+      )
     );
   }
 
-  function emptyCart() {
+  // ✅ This is the real clear cart function for frontend
+  function clearCart() {
     setCart([]);
-    clearCart();
+    clearCartStorage();
   }
 
   const subtotal = useMemo(
@@ -54,7 +61,14 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, setQty, emptyCart, subtotal }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        setQty,
+        subtotal,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>

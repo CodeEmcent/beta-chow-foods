@@ -28,6 +28,8 @@ export default function AdminMenu() {
     description: "",
   });
 
+  const [imageFile, setImageFile] = useState(null);
+
   /* ---------- FILTERS ---------- */
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -71,25 +73,49 @@ export default function AdminMenu() {
   /* ---------- ADD MENU ITEM ---------- */
   function handleSubmit(e) {
     e.preventDefault();
+
     if (!form.name || !form.price || !form.category_id) return;
 
-    createMenuItem(token, form).then((newItem) => {
+    const data = new FormData();
+    data.append("name", form.name);
+    data.append("price", form.price);
+    data.append("category_id", form.category_id);
+    data.append("description", form.description || "");
+
+    if (imageFile) {
+      data.append("image", imageFile);
+    }
+
+    createMenuItem(token, data).then((newItem) => {
       setMenu((prev) => [...prev, newItem]);
-      setForm({ name: "", price: "", category_id: "", description: "" });
+
+      setForm({
+        name: "",
+        price: "",
+        category_id: "",
+        description: "",
+        image_url: "",
+      });
+
+      setImageFile(null);
     });
   }
 
   /* ---------- SAVE EDIT ---------- */
   function saveEdit() {
-    updateMenuItem(token, editingItem.id, {
-      name: editingItem.name,
-      price: editingItem.price,
-      category_id: editingItem.category_id,
-      description: editingItem.description,
-    }).then((updated) => {
-      setMenu((prev) =>
-        prev.map((i) => (i.id === updated.id ? updated : i))
-      );
+    const data = new FormData();
+    data.append("name", editingItem.name);
+    data.append("price", editingItem.price);
+    data.append("category_id", editingItem.category_id);
+    data.append("description", editingItem.description || "");
+
+    // only send image if admin selects a new one
+    if (editingItem.imageFile) {
+      data.append("image", editingItem.imageFile);
+    }
+
+    updateMenuItem(token, editingItem.id, data).then((updated) => {
+      setMenu((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
       setEditingItem(null);
     });
   }
@@ -131,6 +157,14 @@ export default function AdminMenu() {
         />
 
         <input
+        placeholder="Description"
+        value={form.description}
+        onChange={(e) =>
+          setForm({ ...form, description: e.target.value })
+        }
+      />
+
+        <input
           placeholder="Price"
           type="number"
           value={form.price}
@@ -138,6 +172,12 @@ export default function AdminMenu() {
             setForm({ ...form, price: e.target.value })
           }
         />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+          />
 
         <button className="btn btn-success">Add Item</button>
         <button
@@ -199,7 +239,9 @@ export default function AdminMenu() {
         <table className="admin-orders-table">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
+              <th>Description</th>
               <th>Price</th>
               <th>Status</th>
               <th>Action</th>
@@ -208,20 +250,51 @@ export default function AdminMenu() {
           <tbody>
             {menu.map((item) => (
               <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>₦{formatMoney(item.price)}</td>
                 <td>
-                  <span className={`order-status ${item.is_available ? "completed" : "cancelled"}`}>
+                  {item.image_url ? (
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        border: "1px solid rgba(255,255,255,0.2)",
+                      }}
+                    />
+                  ) : (
+                    <span style={{ opacity: 0.6 }}>No image</span>
+                  )}
+                </td>
+
+                <td>{item.name}</td>
+
+                <td style={{ maxWidth: "280px" }}>
+                  <span style={{ opacity: 0.9 }}>
+                    {item.description ? item.description : "No description"}
+                  </span>
+                </td>
+
+                <td>₦{formatMoney(item.price)}</td>
+
+                <td>
+                  <span
+                    className={`order-status ${
+                      item.is_available ? "completed" : "cancelled"
+                    }`}
+                  >
                     {item.is_available ? "Available" : "Unavailable"}
                   </span>
                 </td>
+
                 <td className="action-buttons">
                   {item.is_available ? (
                     <button
                       className="btn btn-warning"
                       onClick={() =>
                         toggleMenuItem(token, item.id, false).then((u) =>
-                          setMenu((p) => p.map((i) => i.id === u.id ? u : i))
+                          setMenu((p) => p.map((i) => (i.id === u.id ? u : i)))
                         )
                       }
                     >
@@ -232,7 +305,7 @@ export default function AdminMenu() {
                       className="btn btn-success"
                       onClick={() =>
                         toggleMenuItem(token, item.id, true).then((u) =>
-                          setMenu((p) => p.map((i) => i.id === u.id ? u : i))
+                          setMenu((p) => p.map((i) => (i.id === u.id ? u : i)))
                         )
                       }
                     >
@@ -260,6 +333,60 @@ export default function AdminMenu() {
                   </button>
                 </td>
               </tr>
+
+              // <tr key={item.id}>
+              //   <td>{item.name}</td>
+              //   <td>₦{formatMoney(item.price)}</td>
+              //   <td>
+              //     <span className={`order-status ${item.is_available ? "completed" : "cancelled"}`}>
+              //       {item.is_available ? "Available" : "Unavailable"}
+              //     </span>
+              //   </td>
+              //   <td className="action-buttons">
+              //     {item.is_available ? (
+              //       <button
+              //         className="btn btn-warning"
+              //         onClick={() =>
+              //           toggleMenuItem(token, item.id, false).then((u) =>
+              //             setMenu((p) => p.map((i) => i.id === u.id ? u : i))
+              //           )
+              //         }
+              //       >
+              //         Disable
+              //       </button>
+              //     ) : (
+              //       <button
+              //         className="btn btn-success"
+              //         onClick={() =>
+              //           toggleMenuItem(token, item.id, true).then((u) =>
+              //             setMenu((p) => p.map((i) => i.id === u.id ? u : i))
+              //           )
+              //         }
+              //       >
+              //         Enable
+              //       </button>
+              //     )}
+
+              //     <button
+              //       className="btn btn-primary"
+              //       onClick={() =>
+              //         setEditingItem({
+              //           ...item,
+              //           category_id: item.category.id,
+              //         })
+              //       }
+              //     >
+              //       Edit
+              //     </button>
+
+              //     <button
+              //       className="btn btn-danger"
+              //       onClick={() => setDeleteTarget(item)}
+              //     >
+              //       Delete
+              //     </button>
+              //   </td>
+              // </tr>
             ))}
           </tbody>
         </table>
@@ -295,6 +422,24 @@ export default function AdminMenu() {
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
+
+          <textarea
+            value={editingItem.description || ""}
+            onChange={(e) =>
+              setEditingItem({ ...editingItem, description: e.target.value })
+            }
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setEditingItem({
+                ...editingItem,
+                imageFile: e.target.files?.[0] || null,
+              })
+            }
+          />
 
           <button className="btn btn-success" onClick={saveEdit}>Save</button>
           <button className="btn btn-danger" onClick={() => setEditingItem(null)}>Cancel</button>

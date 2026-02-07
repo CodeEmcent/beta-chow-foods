@@ -99,7 +99,9 @@ export default function Menu() {
                   <div className="menu-image placeholder">No image</div>
                 )}
 
-                <span className="badge">Available</span>
+                <span className={`badge ${it.is_available ? "ok" : "no"}`}>
+                  {it.is_available ? "Available" : "Unavailable"}
+                </span>
 
                 <h3 className="menu-title">{it.name}</h3>
                 <p className="menu-desc">{it.description}</p>

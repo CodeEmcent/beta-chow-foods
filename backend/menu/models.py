@@ -19,7 +19,7 @@ class MenuItem(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image_url = models.URLField(blank=True)  # quick MVP (later use ImageField)
+    image = models.ImageField(upload_to="menu_images/", blank=True, null=True)
     is_available = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)

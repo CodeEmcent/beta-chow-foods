@@ -1,0 +1,166 @@
+/* ==============================
+   PROFILE PAGE (PREMIUM DESIGN)
+   ============================== */
+
+.account-page {
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 18px;
+  background: radial-gradient(
+      circle at top left,
+      rgba(244, 180, 0, 0.08),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 120, 60, 0.12),
+      transparent 50%
+    );
+}
+
+.account-card {
+  width: min(900px, 100%);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 120, 60, 0.25);
+  border-radius: 22px;
+  padding: 36px 32px;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+/* HEADER */
+.account-title {
+  font-size: 2.3rem;
+  font-weight: 1000;
+  margin: 0;
+  color: #0b3d24;
+  letter-spacing: 0.3px;
+}
+
+.account-subtitle {
+  margin-top: 8px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #334155;
+  line-height: 1.5;
+}
+
+/* INFO STATES */
+.account-info {
+  margin-top: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.account-error {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  color: #b91c1c;
+  font-weight: 900;
+}
+
+.account-success {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0, 160, 90, 0.12);
+  border: 1px solid rgba(0, 160, 90, 0.25);
+  color: #0b3d24;
+  font-weight: 950;
+}
+
+/* FORM */
+.profile-form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row label {
+  font-weight: 900;
+  color: #0b3d24;
+  font-size: 0.95rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.form-row input {
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 120, 60, 0.25);
+  font-size: 1rem;
+  outline: none;
+  font-weight: 650;
+  background: rgba(255, 255, 255, 0.85);
+  transition: border 0.15s ease, box-shadow 0.15s ease,
+    transform 0.12s ease;
+}
+
+.form-row input::placeholder {
+  color: rgba(15, 23, 42, 0.45);
+  font-weight: 600;
+}
+
+.form-row input:focus {
+  border-color: rgba(244, 180, 0, 0.9);
+  box-shadow: 0 0 0 4px rgba(244, 180, 0, 0.22);
+  transform: translateY(-1px);
+}
+
+/* BUTTON */
+.account-btn {
+  margin-top: 10px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(to right, #0b3d24, #145a34);
+  color: white;
+  font-weight: 1000;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease,
+    box-shadow 0.15s ease;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
+}
+
+.account-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.account-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .account-card {
+    padding: 26px 18px;
+  }
+
+  .account-title {
+    font-size: 1.9rem;
+  }
+
+  .account-subtitle {
+    font-size: 0.98rem;
+  }
+}
