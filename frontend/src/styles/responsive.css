@@ -1,0 +1,126 @@
+/* src/styles/responsive.css */
+/* GLOBAL RESPONSIVE PATCH FOR BETA CHOW (CORRECTED VERSION) */
+
+/* Prevent horizontal scrolling safely */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Safer global media responsiveness */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Fix long words ONLY for text elements (NOT ALL ELEMENTS) */
+p, h1, h2, h3, h4, h5, h6, span, a, li {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* =============================== */
+/* TABLET RESPONSIVENESS */
+/* =============================== */
+@media (max-width: 900px) {
+
+  /* Footer */
+  .footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  /* Menu grid */
+  .grid-auto {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  }
+
+  /* Checkout */
+  .checkout-page {
+    padding: 20px !important;
+  }
+
+  .summary-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Admin Layout */
+  .admin-layout {
+    flex-direction: column !important;
+  }
+
+  .admin-sidebar {
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .admin-nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-main {
+    padding: 16px !important;
+  }
+
+  /* Admin order card */
+  .admin-order-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .order-info {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Analytics chart grid fix */
+  .charts-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =============================== */
+/* MOBILE RESPONSIVENESS */
+/* =============================== */
+@media (max-width: 600px) {
+
+  /* Reduce global padding */
+  .container,
+  .section-inner {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Buttons full width */
+  .btn,
+  .checkout-btn,
+  .whatsapp-btn {
+    width: 100% !important;
+  }
+
+  /* Cart controls stack */
+  .cart-item-main {
+    flex-direction: column !important;
+    gap: 8px;
+  }
+
+  .cart-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .qty-controls {
+    justify-content: center;
+  }
+
+  .remove-btn {
+    width: 100%;
+  }
+}

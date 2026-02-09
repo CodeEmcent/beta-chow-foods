@@ -16,7 +16,16 @@
 
 * { box-sizing: border-box; }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
 html, body { width: 100%; }
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -39,5 +48,4 @@ body::before {
 
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; }
-img { max-width: 100%; display: block; }
 input, textarea, select { font-family: inherit; }

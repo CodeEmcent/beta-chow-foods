@@ -54,12 +54,29 @@ class AdminOrderListView(generics.ListAPIView):
 
         return qs
 
-
 class AdminOrderDetailView(generics.RetrieveUpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderAdminSerializer
     lookup_field = "id"
     permission_classes = [IsAdminUser]
+
+    def patch(self, request, *args, **kwargs):
+        order = self.get_object()
+
+        new_status = request.data.get("status")
+        force = request.data.get("force", False)
+
+        if new_status:
+            try:
+                order.change_status(new_status, force=force)
+            except ValidationError as e:
+                return Response(
+                    {"detail": str(e.detail[0])},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        serializer = self.get_serializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SalesSummaryView(APIView):

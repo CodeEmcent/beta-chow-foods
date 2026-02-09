@@ -5,10 +5,11 @@ import { createOrder } from "../api/orders";
 import "../styles/Checkout.css";
 import { formatMoney } from "../utils/money";
 
-
 export default function Checkout() {
   const nav = useNavigate();
-  const { cart, subtotal, emptyCart } = useCart();
+
+  // ✅ FIXED: emptyCart renamed to clearCart
+  const { cart, subtotal, clearCart } = useCart();
 
   const [full_name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -36,11 +37,15 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
-  const itemsPayload = useMemo(() => cart.map((x) => ({
-    menu_item_id: x.id,
-    quantity: x.quantity,
-    notes: x.notes || "",
-  })), [cart]);
+  const itemsPayload = useMemo(
+    () =>
+      cart.map((x) => ({
+        menu_item_id: x.id,
+        quantity: x.quantity,
+        notes: x.notes || "",
+      })),
+    [cart]
+  );
 
   async function submit(e) {
     e.preventDefault();
@@ -69,10 +74,13 @@ export default function Checkout() {
       };
 
       const res = await createOrder(payload);
-      emptyCart();
+
+      // ✅ FIXED: clearCart instead of emptyCart
+      clearCart();
+
       nav(`/order-confirmed/${res.order_no}`);
     } catch (e2) {
-      setErr(e2.message);
+      setErr(e2.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -96,7 +104,6 @@ export default function Checkout() {
       {err ? <p className="error-text">{err}</p> : null}
 
       <form onSubmit={submit} className="checkout-form">
-
         {/* CUSTOMER DETAILS */}
         <div className="checkout-card">
           <h3>Customer Details</h3>
@@ -159,7 +166,9 @@ export default function Checkout() {
                 <option value="BARIGA">Bariga – ₦600</option>
               </select>
 
-              <p><b>Delivery Fee:</b> ₦{delivery_fee}</p>
+              <p>
+                <b>Delivery Fee:</b> ₦{delivery_fee}
+              </p>
             </>
           )}
         </div>
@@ -179,7 +188,8 @@ export default function Checkout() {
           {payment_method === "BANK_TRANSFER" && (
             <>
               <p className="payment-note">
-                Transfer to: <b>(Add account details later)</b> and enter payment reference below.
+                Transfer to: <b>(Add account details later)</b> and enter payment
+                reference below.
               </p>
               <input
                 className="input"
@@ -193,26 +203,25 @@ export default function Checkout() {
 
         {/* ORDER SUMMARY */}
         <div className="checkout-summary">
-  <div className="summary-row">
-    <span>Subtotal</span>
-    <span>₦{formatMoney(subtotal)}</span>
-  </div>
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>₦{formatMoney(subtotal)}</span>
+          </div>
 
-  <div className="summary-row">
-    <span>Delivery Fee</span>
-    <span>₦{formatMoney(delivery_fee)}</span>
-  </div>
+          <div className="summary-row">
+            <span>Delivery Fee</span>
+            <span>₦{formatMoney(delivery_fee)}</span>
+          </div>
 
-  <div className="summary-row total">
-    <span>Total</span>
-    <span>₦{formatMoney(total)}</span>
-  </div>
+          <div className="summary-row total">
+            <span>Total</span>
+            <span>₦{formatMoney(total)}</span>
+          </div>
 
-  <button disabled={loading} className="btn-primary" style={{ width: "100%" }}>
-    {loading ? "Placing order..." : "Place Order"}
-  </button>
-</div>
-
+          <button disabled={loading} className="btn-primary" style={{ width: "100%" }}>
+            {loading ? "Placing order..." : "Place Order"}
+          </button>
+        </div>
       </form>
     </div>
   );

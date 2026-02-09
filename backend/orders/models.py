@@ -80,21 +80,30 @@ class Order(models.Model):
         STATUS_OUT: [STATUS_COMPLETED],
     }
 
-    def change_status(self, new_status):
-        if self.status == self.STATUS_COMPLETED:
-            raise ValidationError("Completed orders cannot be changed.")
+    def change_status(self, new_status, force=False):
+        """
+        Change order status with workflow enforcement.
+        force=True allows admin to override restrictions.
+        """
 
-        allowed = self.STATUS_FLOW.get(self.status, [])
-        if new_status not in allowed:
+        if new_status == self.status:
+            return
+
+        # allow override
+        if force:
+            self.status = new_status
+            self.save()
+            return
+
+        allowed_next = self.ALLOWED_TRANSITIONS.get(self.status, [])
+
+        if new_status not in allowed_next:
             raise ValidationError(
-                f"Invalid status transition: {self.status} → {new_status}"
+                f"You cannot move from {self.status} to {new_status}. "
+                f"Please follow the correct workflow."
             )
 
         self.status = new_status
-
-        if new_status == self.STATUS_COMPLETED:
-            self.completed_at = timezone.now()
-
         self.save()
 
 

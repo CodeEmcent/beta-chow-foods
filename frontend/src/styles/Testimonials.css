@@ -1,9 +1,9 @@
-/* src/styles/Testimonials.css */
+/* src/styles/Testimonials.css (FINAL STABLE VERSION - NO SLICK) */
 
 .testimonials {
   width: 100%;
   padding: 96px 0;
-  background: #f9fafb; /* calm, trust-friendly */
+  background: #f9fafb;
 }
 
 .testimonials-inner {
@@ -25,17 +25,32 @@
   font-size: 1rem;
 }
 
-/* SLIDES */
-.testimonial-slide {
-  padding: 14px;
+/* SCROLL TESTIMONIALS */
+.testimonial-scroll {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 18px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.testimonial-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.testimonial-scroll::-webkit-scrollbar-thumb {
+  background: rgba(244, 180, 0, 0.55);
+  border-radius: 20px;
 }
 
 .testimonial-card {
+  flex: 0 0 340px;
+  scroll-snap-align: center;
   background: #ffffff;
   border-radius: 18px;
   padding: 26px 22px;
   text-align: left;
-  height: 100%;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -72,12 +87,33 @@
   color: #6b7280;
 }
 
-/* DOTS */
-.slick-dots li button:before {
-  color: #f97316;
+/* ================================ */
+/* SWIPER STYLES FOR TESTIMONIALS */
+/* ================================ */
+
+.testimonial-swiper {
+  margin-top: 30px;
+  padding-bottom: 50px;
+}
+
+.testimonial-swiper .swiper-pagination-bullet {
+  background: #f97316;
   opacity: 0.35;
 }
 
-.slick-dots li.slick-active button:before {
+.testimonial-swiper .swiper-pagination-bullet-active {
   opacity: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .testimonial-card {
+    flex: 0 0 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .testimonial-card {
+    flex: 0 0 240px;
+  }
 }

@@ -1,6 +1,12 @@
-// src/components/Testimonials.jsx
+// src/components/Testimonials.jsx (SWIPER VERSION)
+
 import React from "react";
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
+
 import "../styles/Testimonials.css";
 
 const reviews = [
@@ -35,33 +41,31 @@ const reviews = [
 ];
 
 export default function Testimonials() {
-  const settings = {
-    dots: true,
-    arrows: false,
-    infinite: true,
-    speed: 600,
-    autoplay: true,
-    autoplaySpeed: 3500,
-    pauseOnHover: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
-    ],
-  };
-
   return (
     <section className="testimonials">
       <div className="testimonials-inner">
         <h2>What Our Customers Say</h2>
+
         <p className="subtitle">
           Real feedback from customers across Lagos who enjoy Beta Chow.
         </p>
 
-        <Slider {...settings}>
+        <Swiper
+          modules={[Autoplay, Pagination]}
+          spaceBetween={20}
+          slidesPerView={3}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          breakpoints={{
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 1 },
+            1024: { slidesPerView: 2 },
+            1200: { slidesPerView: 3 },
+          }}
+          className="testimonial-swiper"
+        >
           {reviews.map((r, i) => (
-            <div key={i} className="testimonial-slide">
+            <SwiperSlide key={i}>
               <div className="testimonial-card">
                 <div className="stars">
                   {"★".repeat(r.rating)}
@@ -75,9 +79,9 @@ export default function Testimonials() {
                   <span>{r.location}</span>
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </Slider>
+        </Swiper>
       </div>
     </section>
   );

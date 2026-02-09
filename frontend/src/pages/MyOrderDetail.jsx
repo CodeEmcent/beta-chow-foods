@@ -17,7 +17,15 @@ export default function MyOrderDetail() {
   return (
     <div className="order-detail-page">
       <div className="order-detail-header">
-        <h2>Order: {order.order_no}</h2>
+        
+        {/* ✅ TITLE ROW */}
+        <div className="order-title-row">
+          <h2>Order: {order.order_no}</h2>
+
+          <span className={`order-status-badge ${order.status.toLowerCase()}`}>
+            {order.status}
+          </span>
+        </div>
 
         <p className="order-detail-meta">
           <strong>Status:</strong>{" "}
@@ -29,10 +37,6 @@ export default function MyOrderDetail() {
         <p className="order-detail-meta">
           <strong>Total:</strong> ₦{formatMoney(Number(order.total))}
         </p>
-
-        <span className={`order-status-badge ${order.status.toLowerCase()}`}>
-          {order.status}
-        </span>
       </div>
 
       <div className="order-items-section">

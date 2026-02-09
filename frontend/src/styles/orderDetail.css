@@ -8,19 +8,27 @@
 }
 
 .order-detail-header {
-  position: relative;
   margin-bottom: 30px;
+}
+
+/* ✅ NEW TITLE ROW */
+.order-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .order-detail-header h2 {
   font-size: 34px;
   color: #0c3b2e;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 .order-detail-meta {
   font-size: 16px;
-  margin: 6px 0;
+  margin: 10px 0;
   color: #222;
 }
 
@@ -41,15 +49,14 @@
   color: #c0392b;
 }
 
+/* ✅ BADGE FIXED (no absolute anymore) */
 .order-status-badge {
-  position: absolute;
-  right: 0;
-  top: 0;
   padding: 8px 18px;
   border-radius: 30px;
   font-weight: bold;
   font-size: 14px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .order-status-badge.new {
@@ -76,8 +83,14 @@
 .order-items-table {
   margin-top: 15px;
   border-radius: 14px;
-  overflow: hidden;
+  overflow-x: auto; /* ✅ allow scroll on mobile */
   border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Make sure table doesn't shrink weirdly */
+.order-items-header,
+.order-item-row {
+  min-width: 520px; /* ✅ ensures columns keep shape */
 }
 
 .order-items-header {
@@ -147,4 +160,27 @@
 
 .order-back-btn:hover {
   background: #146b50;
+}
+
+/* =============================== */
+/* ✅ MOBILE RESPONSIVENESS FIX */
+/* =============================== */
+@media (max-width: 600px) {
+  .order-detail-page {
+    padding: 22px;
+    margin: 25px 12px;
+  }
+
+  .order-detail-header h2 {
+    font-size: 24px;
+  }
+
+  .order-detail-meta {
+    font-size: 14px;
+  }
+
+  .order-status-badge {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
 }

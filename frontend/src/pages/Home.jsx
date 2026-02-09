@@ -1,8 +1,15 @@
-// Home.jsx (ENHANCED)
+// Home.jsx (SWIPER VERSION)
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Slider from "react-slick";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
 import "../styles/Home.css";
 
 import heroVideo from "../assets/kitchen.mp4";
@@ -14,25 +21,9 @@ import chops from "../assets/small_chops.jpg";
 import Testimonials from "../components/Testimonials";
 
 export default function Home() {
-  const sliderSettings = {
-    dots: true,
-    arrows: true,
-    infinite: true,
-    speed: 650,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2400,
-    pauseOnHover: true,
-    responsive: [
-      { breakpoint: 1200, settings: { slidesToShow: 2 } },
-      { breakpoint: 760, settings: { slidesToShow: 1 } },
-    ],
-  };
-
   return (
     <div className="home">
-      {/* HERO VIDEO (FULL WIDTH) */}
+      {/* HERO VIDEO */}
       <section className="hero video-hero full-bleed">
         <video autoPlay muted loop playsInline className="hero-video">
           <source src={heroVideo} type="video/mp4" />
@@ -73,7 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOD CAROUSEL */}
+      {/* POPULAR DISHES (SWIPER CAROUSEL) */}
       <motion.section
         className="featured full-bleed"
         initial={{ opacity: 0, y: 36 }}
@@ -83,17 +74,45 @@ export default function Home() {
       >
         <div className="section-inner">
           <h2>Our Popular Dishes</h2>
-          <Slider {...sliderSettings} className="carousel">
-            <FoodCard img={jollof} title="Jollof Rice & Chicken" />
-            <FoodCard img={friedRice} title="Fried Rice Special" />
-            <FoodCard img={egusi} title="Egusi Soup & Pounded Yam" />
-            <FoodCard img={suya} title="Spicy Suya" />
-            <FoodCard img={chops} title="Small Chops" />
-          </Slider>
+
+          <Swiper
+            modules={[Autoplay, Pagination, Navigation]}
+            spaceBetween={20}
+            slidesPerView={3}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            breakpoints={{
+              0: { slidesPerView: 1 },
+              760: { slidesPerView: 2 },
+              1200: { slidesPerView: 3 },
+            }}
+            className="food-swiper"
+          >
+            <SwiperSlide>
+              <FoodCard img={jollof} title="Jollof Rice & Chicken" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <FoodCard img={friedRice} title="Fried Rice Special" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <FoodCard img={egusi} title="Egusi Soup & Pounded Yam" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <FoodCard img={suya} title="Spicy Suya" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <FoodCard img={chops} title="Small Chops" />
+            </SwiperSlide>
+          </Swiper>
         </div>
       </motion.section>
 
-      {/* WHY US (EXPANDED) */}
+      {/* WHY US */}
       <motion.section
         className="why-us full-bleed"
         initial={{ opacity: 0 }}
@@ -135,7 +154,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* HOW TO ORDER (EXPANDED + RESPONSIVE STEPS) */}
+      {/* HOW TO ORDER */}
       <motion.section
         className="how-to-order full-bleed"
         initial={{ opacity: 0, y: 36 }}
@@ -168,7 +187,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* CTA */}
+      {/* TESTIMONIALS */}
       <motion.section
         className="cta full-bleed"
         initial={{ opacity: 0 }}
@@ -176,15 +195,6 @@ export default function Home() {
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.55 }}
       >
-        {/* <div className="section-inner">
-          <div className="cta-card">
-            <h2>Ready to Enjoy Great Food?</h2>
-            <p>Order now and let us serve you delicious Nigerian meals.</p>
-            <Link to="/menu" className="btn primary">
-              Order Now
-            </Link>
-          </div>
-        </div> */}
         <Testimonials />
       </motion.section>
     </div>
