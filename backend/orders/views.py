@@ -104,7 +104,7 @@ class SalesSummaryView(APIView):
         })
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def admin_complete_order(request, id):
     order = get_object_or_404(Order, id=id)
 
