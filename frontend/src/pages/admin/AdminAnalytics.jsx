@@ -38,10 +38,10 @@ export default function AdminAnalytics() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchAdminAnalytics(token)
+    fetchAdminAnalytics()
       .then(setData)
       .catch(() => setError("Failed to load analytics dashboard"));
-  }, [token]);
+  }, []);
 
   if (error) return <p className="admin-error">{error}</p>;
   if (!data) return <p className="admin-loading">Loading analytics...</p>;
