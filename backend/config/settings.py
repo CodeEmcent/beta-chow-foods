@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://your-vercel-domain.vercel.app",
+    "https://beta-chow-foods.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
