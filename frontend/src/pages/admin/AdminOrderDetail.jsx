@@ -112,6 +112,38 @@ export default function AdminOrderDetail() {
     }
   }
 
+  async function forceChangeStatus(newStatus) {
+    if (!order) return;
+
+    const confirmOverride = window.confirm(
+      `⚠️ You are forcing a status change.\n\nMove order from "${statusLabels[order.status]}" to "${statusLabels[newStatus]}"?\n\nContinue?`
+    );
+
+    if (!confirmOverride) return;
+
+    setUpdating(true);
+    setError("");
+
+    try {
+      const updated = await updateOrder(
+        id,
+        { status: newStatus, force: true },
+        token
+      );
+      setOrder(updated);
+    } catch (err) {
+      if (err?.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (err?.message) {
+        setError(err.message);
+      } else {
+        setError("Override failed. Please try again.");
+      }
+    } finally {
+      setUpdating(false);
+    }
+  }
+
   if (!order) return <p className="admin-loading">Loading order details...</p>;
 
   const allowedNext = allowedTransitions[order.status] || [];
@@ -144,6 +176,18 @@ export default function AdminOrderDetail() {
             </option>
           ))}
         </select>
+
+        {(order.status === "CANCELLED" || order.status === "COMPLETED") && (
+          <div style={{ marginTop: "12px" }}>
+            <button
+              className="override-btn"
+              disabled={updating}
+              onClick={() => forceChangeStatus("NEW")}
+            >
+              Reopen Order
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ✅ Friendly admin error message */}

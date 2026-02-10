@@ -35,28 +35,55 @@ class Order(models.Model):
     # ---- ORDER TYPES ----
     TYPE_DELIVERY = "DELIVERY"
     TYPE_PICKUP = "PICKUP"
-    TYPE_CHOICES = [(TYPE_DELIVERY, "Delivery"), (TYPE_PICKUP, "Pickup")]
+
+    TYPE_CHOICES = [
+        (TYPE_DELIVERY, "Delivery"),
+        (TYPE_PICKUP, "Pickup"),
+    ]
 
     # ---- PAYMENT ----
     PAYMENT_COD = "PAY_ON_DELIVERY"
     PAYMENT_TRANSFER = "BANK_TRANSFER"
+
     PAYMENT_CHOICES = [
         (PAYMENT_COD, "Pay on delivery"),
         (PAYMENT_TRANSFER, "Bank transfer"),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="orders"
+    )
+
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="orders")
+
     order_no = models.CharField(max_length=20, unique=True)
 
-    order_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_DELIVERY)
+    order_type = models.CharField(
+        max_length=20,
+        choices=TYPE_CHOICES,
+        default=TYPE_DELIVERY
+    )
+
     delivery_address = models.TextField(blank=True)
     landmark = models.CharField(max_length=200, blank=True)
 
-    payment_method = models.CharField(max_length=30, choices=PAYMENT_CHOICES, default=PAYMENT_COD)
+    payment_method = models.CharField(
+        max_length=30,
+        choices=PAYMENT_CHOICES,
+        default=PAYMENT_COD
+    )
+
     payment_reference = models.CharField(max_length=120, blank=True)
 
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=STATUS_NEW)
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default=STATUS_NEW
+    )
 
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -73,11 +100,13 @@ class Order(models.Model):
         return self.order_no
 
     # ---- VALID STATUS FLOW ----
-    STATUS_FLOW = {
+    ALLOWED_TRANSITIONS = {
         STATUS_NEW: [STATUS_ACCEPTED, STATUS_CANCELLED],
         STATUS_ACCEPTED: [STATUS_COOKING, STATUS_CANCELLED],
-        STATUS_COOKING: [STATUS_OUT],
-        STATUS_OUT: [STATUS_COMPLETED],
+        STATUS_COOKING: [STATUS_OUT, STATUS_CANCELLED],
+        STATUS_OUT: [STATUS_COMPLETED, STATUS_CANCELLED],
+        STATUS_COMPLETED: [],
+        STATUS_CANCELLED: [],
     }
 
     def change_status(self, new_status, force=False):
@@ -104,8 +133,11 @@ class Order(models.Model):
             )
 
         self.status = new_status
-        self.save()
 
+        if new_status == self.STATUS_COMPLETED:
+            self.completed_at = timezone.now()
+
+        self.save()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")

@@ -3,9 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 from django.db.models import Sum, Count
-from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
 from .models import Order
 from .serializers import ( 
     OrderCreateSerializer, OrderPublicSerializer, 
@@ -66,18 +67,21 @@ class AdminOrderDetailView(generics.RetrieveUpdateAPIView):
         new_status = request.data.get("status")
         force = request.data.get("force", False)
 
+        # ✅ Convert force properly
+        if isinstance(force, str):
+            force = force.lower() == "true"
+
         if new_status:
             try:
                 order.change_status(new_status, force=force)
             except ValidationError as e:
                 return Response(
-                    {"detail": str(e.detail[0])},
+                    {"detail": str(e)},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
         serializer = self.get_serializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class SalesSummaryView(APIView):
     permission_classes = [IsAuthenticated]
