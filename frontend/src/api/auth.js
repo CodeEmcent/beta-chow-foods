@@ -1,14 +1,14 @@
 import { apiFetch } from "./client";
 
 export function signupCustomer(data) {
-  return apiFetch("/accounts/signup/", {
+  return apiFetch("/api/accounts/signup/", {
     method: "POST",
     body: JSON.stringify(data),
   });
 }
 
 export function loginCustomer(email, password) {
-  return apiFetch("/auth/login/", {
+  return apiFetch("/api/auth/login/", {
     method: "POST",
     body: JSON.stringify({
       username: email,   // 🔥 IMPORTANT FIX
