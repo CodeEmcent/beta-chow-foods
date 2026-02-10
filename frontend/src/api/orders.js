@@ -1,28 +1,29 @@
-import { apiFetch } from "./client";
+import { apiFetch, API_BASE } from "./client";
 
 export function createOrder(payload) {
-  return apiFetch("/orders/", {
+  return apiFetch("/api/orders/", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function trackOrder(orderNo) {
-  return apiFetch(`/orders/track/${orderNo}/`);
+  return apiFetch(`/api/orders/track/${orderNo}/`);
 }
 
-/* ✅ NEW: Customer order history */
+/* ✅ Customer order history */
 export function fetchMyOrders() {
-  return apiFetch("/orders/my/");
+  return apiFetch("/api/orders/my/");
 }
 
-/* ✅ NEW: Customer order detail */
+/* ✅ Customer order detail */
 export function fetchMyOrderDetail(id) {
-  return apiFetch(`/orders/my/${id}/`);
+  return apiFetch(`/api/orders/my/${id}/`);
 }
 
+/* ✅ WhatsApp order */
 export async function createWhatsAppOrder(payload) {
-  const res = await fetch("http://127.0.0.1:8000/api/orders/whatsapp/", {
+  const res = await fetch(`${API_BASE}/api/orders/whatsapp/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -33,5 +34,5 @@ export async function createWhatsAppOrder(payload) {
     throw new Error(err?.detail || "Failed to create WhatsApp order");
   }
 
-  return res.json(); // { order_no, whatsapp_url, message }
+  return res.json();
 }
