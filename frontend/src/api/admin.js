@@ -54,7 +54,6 @@ export const createMenuItem = async (formData) => {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      // Do NOT set Content-Type for FormData
     },
     body: formData,
   });
