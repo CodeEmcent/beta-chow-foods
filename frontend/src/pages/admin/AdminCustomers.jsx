@@ -3,15 +3,14 @@ import { fetchCustomers, toggleCustomer } from "../../api/customers";
 import "../../styles/admin.css";
 
 export default function AdminCustomers() {
-  const token = localStorage.getItem("admin_token");
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCustomers(token)
+    fetchCustomers()
       .then(setCustomers)
       .finally(() => setLoading(false));
-  }, [token]);
+  }, []);
 
   if (loading) return <p>Loading customers…</p>;
 
@@ -49,7 +48,7 @@ export default function AdminCustomers() {
                     c.is_active ? "btn-warning" : "btn-success"
                   }`}
                   onClick={() =>
-                    toggleCustomer(token, c.id).then((updated) =>
+                    toggleCustomer(c.id).then((updated) =>
                       setCustomers((prev) =>
                         prev.map((u) =>
                           u.id === c.id ? updated : u

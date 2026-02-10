@@ -1,18 +1,11 @@
 import { apiFetch } from "./client";
 
-export function fetchCustomers(token) {
-  return apiFetch("/accounts/customers/", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export function fetchCustomers() {
+  return apiFetch("/api/accounts/customers/");
 }
 
-export function toggleCustomer(token, id) {
-  return apiFetch(`/accounts/customers/${id}/toggle/`, {
+export function toggleCustomer(id) {
+  return apiFetch(`/api/accounts/customers/${id}/toggle/`, {
     method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
 }
