@@ -30,9 +30,9 @@ class MenuItemListCreateView(generics.ListCreateAPIView):
 
 class MenuItemDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MenuItem.objects.filter(is_deleted=False)
-    # queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = [permissions.IsAdminUser]
+    parser_classes = [MultiPartParser, FormParser]
 
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object()

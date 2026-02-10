@@ -14,8 +14,6 @@ import { formatMoney } from "../../utils/money";
 import "../../styles/admin.css";
 
 export default function AdminMenu() {
-  const token = localStorage.getItem("admin_token");
-
   const [menu, setMenu] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,8 +58,8 @@ export default function AdminMenu() {
     setLoading(true);
 
     Promise.all([
-      fetchMenu(token, qs),
-      fetchCategories(token),
+      fetchMenu(qs),
+      fetchCategories(),
     ])
       .then(([menuData, categoryData]) => {
         setMenu(menuData);
@@ -86,7 +84,7 @@ export default function AdminMenu() {
       data.append("image", imageFile);
     }
 
-    createMenuItem(token, data).then((newItem) => {
+    createMenuItem(data).then((newItem) => {
       setMenu((prev) => [...prev, newItem]);
 
       setForm({
@@ -114,7 +112,7 @@ export default function AdminMenu() {
       data.append("image", editingItem.imageFile);
     }
 
-    updateMenuItem(token, editingItem.id, data).then((updated) => {
+    updateMenuItem(editingItem.id, data).then((updated) => {
       setMenu((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
       setEditingItem(null);
     });
@@ -124,7 +122,7 @@ export default function AdminMenu() {
   function handleDelete(id) {
     if (!window.confirm("Delete this item?")) return;
 
-    deleteMenuItem(token, id).then(() => {
+    deleteMenuItem(id).then(() => {
       setMenu((prev) => prev.filter((i) => i.id !== id));
     });
   }
@@ -293,7 +291,7 @@ export default function AdminMenu() {
                     <button
                       className="btn btn-warning"
                       onClick={() =>
-                        toggleMenuItem(token, item.id, false).then((u) =>
+                        toggleMenuItem(item.id, false).then((u) =>
                           setMenu((p) => p.map((i) => (i.id === u.id ? u : i)))
                         )
                       }
@@ -304,7 +302,7 @@ export default function AdminMenu() {
                     <button
                       className="btn btn-success"
                       onClick={() =>
-                        toggleMenuItem(token, item.id, true).then((u) =>
+                        toggleMenuItem(item.id, true).then((u) =>
                           setMenu((p) => p.map((i) => (i.id === u.id ? u : i)))
                         )
                       }
@@ -333,60 +331,6 @@ export default function AdminMenu() {
                   </button>
                 </td>
               </tr>
-
-              // <tr key={item.id}>
-              //   <td>{item.name}</td>
-              //   <td>₦{formatMoney(item.price)}</td>
-              //   <td>
-              //     <span className={`order-status ${item.is_available ? "completed" : "cancelled"}`}>
-              //       {item.is_available ? "Available" : "Unavailable"}
-              //     </span>
-              //   </td>
-              //   <td className="action-buttons">
-              //     {item.is_available ? (
-              //       <button
-              //         className="btn btn-warning"
-              //         onClick={() =>
-              //           toggleMenuItem(token, item.id, false).then((u) =>
-              //             setMenu((p) => p.map((i) => i.id === u.id ? u : i))
-              //           )
-              //         }
-              //       >
-              //         Disable
-              //       </button>
-              //     ) : (
-              //       <button
-              //         className="btn btn-success"
-              //         onClick={() =>
-              //           toggleMenuItem(token, item.id, true).then((u) =>
-              //             setMenu((p) => p.map((i) => i.id === u.id ? u : i))
-              //           )
-              //         }
-              //       >
-              //         Enable
-              //       </button>
-              //     )}
-
-              //     <button
-              //       className="btn btn-primary"
-              //       onClick={() =>
-              //         setEditingItem({
-              //           ...item,
-              //           category_id: item.category.id,
-              //         })
-              //       }
-              //     >
-              //       Edit
-              //     </button>
-
-              //     <button
-              //       className="btn btn-danger"
-              //       onClick={() => setDeleteTarget(item)}
-              //     >
-              //       Delete
-              //     </button>
-              //   </td>
-              // </tr>
             ))}
           </tbody>
         </table>
@@ -456,13 +400,13 @@ export default function AdminMenu() {
               <input
                 value={c.name}
                 onChange={(e) =>
-                  updateCategory(token, c.id, { name: e.target.value })
+                  updateCategory(c.id, { name: e.target.value })
                 }
               />
               <button
                 className="btn btn-danger"
                 onClick={() =>
-                  deleteCategory(token, c.id).then(() =>
+                  deleteCategory(c.id).then(() =>
                     setCategories((prev) =>
                       prev.filter((x) => x.id !== c.id)
                     )
@@ -483,7 +427,7 @@ export default function AdminMenu() {
           <button
             className="btn btn-success"
             onClick={() =>
-              createCategory(token, { name: newCategory }).then((cat) => {
+              createCategory({ name: newCategory }).then((cat) => {
                 setCategories((p) => [...p, cat]);
                 setNewCategory("");
               })
@@ -513,7 +457,7 @@ export default function AdminMenu() {
           <button
             className="btn btn-danger"
             onClick={() => {
-              deleteMenuItem(token, deleteTarget.id).then(() => {
+              deleteMenuItem(deleteTarget.id).then(() => {
                 setMenu((prev) =>
                   prev.filter((i) => i.id !== deleteTarget.id)
                 );
