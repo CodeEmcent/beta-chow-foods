@@ -1,44 +1,60 @@
-import { apiFetch } from "./client";
+import { apiFetch, API_BASE } from "./client";
+
+/* ============================
+   AUTH
+============================ */
 
 export function adminLogin(username, password) {
-  return apiFetch("/auth/login/", {
+  return apiFetch("/api/auth/login/", {
     method: "POST",
     body: JSON.stringify({ username, password }),
   });
 }
 
-export function fetchAllOrders(token, status = "") {
+/* ============================
+   ORDERS
+============================ */
+
+export function fetchAllOrders(status = "") {
   const q = status ? `?status=${status}` : "";
-  return apiFetch(`/orders/admin/${q}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  return apiFetch(`/api/orders/admin/${q}`);
 }
 
-export function updateOrder(id, payload, token) {
-  return apiFetch(`/orders/admin/${id}/`, {
+export function updateOrder(id, payload) {
+  return apiFetch(`/api/orders/admin/${id}/`, {
     method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(payload),
   });
 }
 
-/* MENU */
-export const fetchMenu = (token, qs = "") =>
-  apiFetch(`/menu/items/${qs.startsWith("?") ? qs : qs ? "?" + qs : ""}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export function fetchSalesSummary() {
+  return apiFetch("/api/orders/admin/summary/");
+}
 
-export const fetchCategories = (token) =>
-  apiFetch(`/menu/categories/`, { headers: { Authorization: `Bearer ${token}` } });
+/* ============================
+   MENU ITEMS
+============================ */
 
-export const createMenuItem = async (token, formData) => {
-  const res = await fetch(`http://127.0.0.1:8000/api/menu/items/`, {
+export const fetchMenu = (qs = "") =>
+  apiFetch(`/api/menu/items/${qs.startsWith("?") ? qs : qs ? "?" + qs : ""}`);
+
+export const fetchCategories = () =>
+  apiFetch("/api/menu/categories/");
+
+/* ============================
+   CREATE / UPDATE MENU ITEM (FormData)
+============================ */
+
+export const createMenuItem = async (formData) => {
+  const token =
+    localStorage.getItem("admin_token") ||
+    localStorage.getItem("access_token");
+
+  const res = await fetch(`${API_BASE}/api/menu/items/`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      // DO NOT SET Content-Type when using FormData
+      // Do NOT set Content-Type for FormData
     },
     body: formData,
   });
@@ -50,8 +66,12 @@ export const createMenuItem = async (token, formData) => {
   return res.json();
 };
 
-export const updateMenuItem = async (token, id, formData) => {
-  const res = await fetch(`http://127.0.0.1:8000/api/menu/items/${id}/`, {
+export const updateMenuItem = async (id, formData) => {
+  const token =
+    localStorage.getItem("admin_token") ||
+    localStorage.getItem("access_token");
+
+  const res = await fetch(`${API_BASE}/api/menu/items/${id}/`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -66,28 +86,38 @@ export const updateMenuItem = async (token, id, formData) => {
   return res.json();
 };
 
-export const deleteMenuItem = (token, id) =>
-  apiFetch(`/menu/items/${id}/`, { method:"DELETE", headers:{ Authorization:`Bearer ${token}` } });
+export const deleteMenuItem = (id) =>
+  apiFetch(`/api/menu/items/${id}/`, { method: "DELETE" });
 
-export const bulkMenuAction = (token, action, ids, payload={}) =>
-  apiFetch(`/menu/items/bulk/`, { method:"POST", headers:{ Authorization:`Bearer ${token}` }, body: JSON.stringify({ action, ids, payload }) });
+export const bulkMenuAction = (action, ids, payload = {}) =>
+  apiFetch(`/api/menu/items/bulk/`, {
+    method: "POST",
+    body: JSON.stringify({ action, ids, payload }),
+  });
 
-/* CATEGORY CRUD */
-export const createCategory = (token, data) =>
-  apiFetch(`/menu/categories/`, { method:"POST", headers:{ Authorization:`Bearer ${token}` }, body: JSON.stringify(data) });
+/* ============================
+   CATEGORY CRUD
+============================ */
 
-export const updateCategory = (token, id, data) =>
-  apiFetch(`/menu/categories/${id}/`, { method:"PATCH", headers:{ Authorization:`Bearer ${token}` }, body: JSON.stringify(data) });
+export const createCategory = (data) =>
+  apiFetch(`/api/menu/categories/`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 
-export const deleteCategory = (token, id) =>
-  apiFetch(`/menu/categories/${id}/`, { method:"DELETE", headers:{ Authorization:`Bearer ${token}` } });
-
-
-export const toggleMenuItem = (token, id, is_available) =>
-  apiFetch(`/menu/items/${id}/`, {
+export const updateCategory = (id, data) =>
+  apiFetch(`/api/menu/categories/${id}/`, {
     method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    body: JSON.stringify(data),
+  });
+
+export const deleteCategory = (id) =>
+  apiFetch(`/api/menu/categories/${id}/`, {
+    method: "DELETE",
+  });
+
+export const toggleMenuItem = (id, is_available) =>
+  apiFetch(`/api/menu/items/${id}/`, {
+    method: "PATCH",
     body: JSON.stringify({ is_available }),
   });

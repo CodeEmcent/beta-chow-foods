@@ -29,7 +29,7 @@ export default function AdminDashboard() {
     if (!token) return;
 
     setLoadingSummary(true);
-    apiFetch("/orders/admin/summary/", {
+    apiFetch("/api/orders/admin/summary/", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(setSummary)
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
     if (!token) return;
 
     setLoadingOrders(true);
-    fetchAllOrders(token, status)
+    fetchAllOrders(status)
       .then(setOrders)
       .catch(() => {
         localStorage.removeItem("admin_token");

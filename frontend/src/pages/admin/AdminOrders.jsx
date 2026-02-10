@@ -18,7 +18,7 @@ export default function AdminOrders() {
     if (!token) navigate("/admin/login");
 
     setLoading(true);
-    fetchAllOrders(token, status)
+    fetchAllOrders(status)
       .then(setOrders)
       .finally(() => setLoading(false));
   }, [token, status, navigate]);

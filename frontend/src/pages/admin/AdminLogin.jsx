@@ -18,6 +18,7 @@ export default function AdminLogin() {
     try {
       const res = await adminLogin(username, password);
       localStorage.setItem("admin_token", res.access);
+      localStorage.setItem("admin_refresh", res.refresh);
       navigate("/admin"); // ✅ Redirect after successful login
     } catch {
       setErr("Invalid username or password");
@@ -29,7 +30,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login">
       <h1>Admin Login</h1>
-      <p class="admin-subtitle">Internal Management Portal</p>
+      <p className="admin-subtitle">Internal Management Portal</p>
 
       {err && <p className="admin-login-error">{err}</p>}
 
