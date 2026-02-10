@@ -3,7 +3,10 @@ export const API_BASE = import.meta.env.VITE_API_URL;
 export async function apiFetch(url, options = {}) {
   const headers = { ...(options.headers || {}) };
 
-  const token = localStorage.getItem("access_token");
+  const token =
+    localStorage.getItem("admin_token") ||
+    localStorage.getItem("access_token");
+
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -20,6 +23,7 @@ export async function apiFetch(url, options = {}) {
   if (res.status === 401) {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("admin_token");
     window.location.href = "/login";
     return;
   }
