@@ -150,7 +150,7 @@ export default function AdminDashboard() {
                       ₦{formatMoney(o.total)}
                     </td>
                     <td>
-                      <Link to={`/admin/orders/${o.id}`} className="view-link">
+                      <Link to={`/api/admin/orders/${o.id}`} className="view-link">
                         View
                       </Link>
                     </td>
