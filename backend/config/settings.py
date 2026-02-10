@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "https://your-vercel-domain.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
