@@ -51,7 +51,7 @@ export default function AdminOrderDetail() {
 
     setError("");
 
-    apiFetch(`/orders/admin/${id}/`, {
+    apiFetch(`/api/orders/admin/${id}/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(setOrder)
@@ -97,7 +97,10 @@ export default function AdminOrderDetail() {
     setUpdating(true);
 
     try {
-      const updated = await updateOrder(id, { status: newStatus }, token);
+      const updated = await updateOrder(id, { 
+        status: newStatus,
+        force: true,
+      });
       setOrder(updated);
     } catch (err) {
       if (err?.response?.data?.detail) {
