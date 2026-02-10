@@ -66,7 +66,7 @@ export default function AdminMenu() {
         setCategories(categoryData);
       })
       .finally(() => setLoading(false));
-  }, [token, search, categoryFilter, availability, ordering]);
+  }, [search, categoryFilter, availability, ordering]);
 
   /* ---------- ADD MENU ITEM ---------- */
   function handleSubmit(e) {
