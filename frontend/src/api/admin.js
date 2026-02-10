@@ -21,7 +21,7 @@ export function fetchAllOrders(status = "") {
 }
 
 export function updateOrder(id, payload) {
-  return apiFetch(`/api/orders/admin/${id}/`, {
+  return apiFetch(`/orders/admin/${id}/`, {
     method: "PATCH",
     body: JSON.stringify(payload),
   });
