@@ -510,64 +510,64 @@
     border-spacing: 0;
   }
 
-  @media (max-width: 900px) {
-
   .admin-orders-table thead {
     display: none;
   }
 
   .admin-orders-table tbody tr {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    border-radius: 14px;
+    display: block;
+    padding: 18px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
   }
 
   .admin-orders-table tbody td {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
-    padding: 0;
-    border: none;
-    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.95rem;
   }
 
-  /* Label on the left */
+  .admin-orders-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  /* Left labels */
   .admin-orders-table tbody td::before {
     content: attr(data-label);
     font-weight: 700;
     color: #14532d;
-    flex: 0 0 110px;
+    flex: 0 0 95px;
+    text-align: left;
   }
 
-  /* Content on the right */
+  /* Right content */
   .admin-orders-table tbody td {
     text-align: right;
   }
 
-  /* Fix description: allow it take full width properly */
+  /* Fix description properly */
   .admin-orders-table tbody td[data-label="Description"] {
-    flex-direction: column;
     align-items: flex-start;
-    text-align: left;
   }
 
-  .admin-orders-table tbody td[data-label="Description"]::before {
-    margin-bottom: 4px;
+  .admin-orders-table tbody td[data-label="Description"] span {
+    max-width: 220px;
+    text-align: right;
+    word-break: break-word;
+    line-height: 1.4;
   }
 
-  /* Status aligned right like price */
-  .admin-orders-table tbody td[data-label="Status"] {
-    align-items: center;
-  }
-
+  /* Status should align like price */
   .admin-orders-table tbody td[data-label="Status"] span {
     margin-left: auto;
   }
 
-  /* Action buttons should wrap neatly */
+  /* Action buttons stack clean */
   .admin-orders-table tbody td[data-label="Action"] {
     flex-direction: column;
     align-items: stretch;
@@ -575,15 +575,18 @@
   }
 
   .admin-orders-table tbody td[data-label="Action"]::before {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .admin-orders-table tbody td[data-label="Action"] .action-buttons {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-}
+
+  .admin-orders-table tbody td[data-label="Action"] .btn {
+    width: 100%;
+  }
 
   /* Buttons stack properly */
   .action-buttons {
