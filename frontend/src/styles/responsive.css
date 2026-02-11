@@ -46,28 +46,6 @@ p, h1, h2, h3, h4, h5, h6, span, a, li {
     gap: 8px;
   }
 
-  /* Admin Layout */
-  .admin-layout {
-    flex-direction: column !important;
-  }
-
-  .admin-sidebar {
-    width: 100% !important;
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .admin-nav {
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .admin-main {
-    padding: 16px !important;
-  }
-
   /* Admin order card */
   .admin-order-card {
     flex-direction: column !important;
