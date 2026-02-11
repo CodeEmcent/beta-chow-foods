@@ -530,6 +530,8 @@
     padding: 10px 0;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.95rem;
+    text-align: right;
+    gap: 14px;
   }
 
   .admin-orders-table tbody td:last-child {
@@ -545,19 +547,23 @@
     text-align: left;
   }
 
-  /* Right content */
-  .admin-orders-table tbody td {
-    text-align: right;
+  /* Description: label on top, content below (full width) */
+  .admin-orders-table tbody td[data-label="Description"] {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 6px;
   }
 
-  /* Fix description properly */
-  .admin-orders-table tbody td[data-label="Description"] {
-    align-items: flex-start;
+  .admin-orders-table tbody td[data-label="Description"]::before {
+    flex: none;
+    width: auto;
   }
 
   .admin-orders-table tbody td[data-label="Description"] span {
-    max-width: 220px;
-    text-align: right;
+    max-width: 100%;
+    text-align: left;
     word-break: break-word;
     line-height: 1.4;
   }
@@ -567,44 +573,36 @@
     margin-left: auto;
   }
 
-  /* Action buttons stack clean */
+  /* Action: label on top, buttons below */
   .admin-orders-table tbody td[data-label="Action"] {
     flex-direction: column;
     align-items: stretch;
+    justify-content: flex-start;
     text-align: left;
     gap: 10px;
-    padding-top: 12px;
   }
 
   .admin-orders-table tbody td[data-label="Action"]::before {
-    margin-bottom: 8px;
+    flex: none;
+    width: auto;
+    margin-bottom: 6px;
   }
 
   .admin-orders-table tbody td[data-label="Action"] .action-buttons {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 0;
-    padding-top: 0;
+    margin: 0;
+    padding: 0;
   }
 
   .admin-orders-table tbody td[data-label="Action"] .btn {
     width: 100%;
   }
 
-  /* Buttons stack properly */
-  .action-buttons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .action-buttons .btn {
-    width: 100%;
-    min-width: unset;
-  }
-
   .view-link {
     width: 100%;
+    text-align: center;
   }
 }
 
