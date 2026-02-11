@@ -214,3 +214,17 @@
     margin-bottom: 25px;
   }
 }
+
+/* Hide topbar logout on desktop */
+@media (min-width: 901px) {
+  .admin-topbar .admin-logout {
+    display: none;
+  }
+}
+
+/* Hide sidebar logout on tablet/mobile */
+@media (max-width: 900px) {
+  .admin-sidebar .admin-logout {
+    display: none;
+  }
+}
