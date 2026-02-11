@@ -14,11 +14,10 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  z-index: 20;
 }
 
 .admin-main {
-  padding: 32px;
-  max-width: none;
   flex: 1;
   padding: 32px;
   background: #f9fafb;
@@ -50,8 +49,17 @@
 .admin-nav a {
   color: #d1fae5;
   text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.admin-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .admin-nav a.active {
@@ -63,28 +71,78 @@
   margin-top: auto;
   background: #ef4444;
   border: none;
-  padding: 8px;
+  padding: 10px 12px;
   color: white;
-  border-radius: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+/* MOBILE TOPBAR */
+.admin-mobile-topbar {
+  display: none;
+  width: 100%;
+  background: #14532d;
+  color: white;
+FC: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
   cursor: pointer;
 }
 
+/* BACKDROP */
+.admin-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  z-index: 10;
+}
+
+/* Hide desktop-only elements on mobile */
+.desktop-only {
+  display: block;
+}
+
+/* RESPONSIVE FIX */
 @media (max-width: 900px) {
+
   .admin-layout {
     flex-direction: column;
   }
 
-  .admin-sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
+  .admin-mobile-topbar {
+    display: flex;
   }
 
-  .admin-nav {
-    flex-direction: row;
-    gap: 8px;
-    flex-wrap: wrap;
+  .desktop-only {
+    display: none;
+  }
+
+  /* Sidebar becomes drawer */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100%;
+    width: 240px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .admin-sidebar.open {
+    left: 0;
   }
 
   .admin-main {
