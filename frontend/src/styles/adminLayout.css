@@ -71,16 +71,38 @@
   margin-top: auto;
   background: #ef4444;
   border: none;
-  padding: 10px 14px;
+  padding: 12px 14px;
   color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
-  transition: opacity 0.2s ease;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s ease;
 }
 
 .admin-logout:hover {
+  background: #dc2626;
   opacity: 0.85;
+}
+
+.admin-mobile-logout {
+  background: #ef4444;
+  border: none;
+  padding: 10px 14px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-mobile-logout:hover {
+  background: #dc2626;
 }
 
 /* ============================
@@ -141,7 +163,7 @@
 }
 
 /* Hamburger Button */
-.admin-menu-btn {
+.admin-icon-btn {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -156,7 +178,7 @@
    OVERLAY (FOR MOBILE SIDEBAR)
 ============================ */
 
-.admin-overlay {
+.admin-backdrop {
   display: none;
   position: fixed;
   top: 0;
@@ -218,13 +240,6 @@
 /* Hide topbar logout on desktop */
 @media (min-width: 901px) {
   .admin-topbar .admin-logout {
-    display: none;
-  }
-}
-
-/* Hide sidebar logout on tablet/mobile */
-@media (max-width: 900px) {
-  .admin-sidebar .admin-logout {
     display: none;
   }
 }

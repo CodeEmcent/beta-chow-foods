@@ -1,32 +1,114 @@
 .about-project {
-  display: grid;
-  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #111827;
 }
 
+/* Page Title */
 .about-project h1 {
-  margin-bottom: 8px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #14532d;
+  margin-bottom: 30px;
+  border-left: 6px solid #16a34a;
+  padding-left: 14px;
 }
 
+/* Sections */
 .about-project section {
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 16px;
-  background-color: #111;
+  background: white;
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.about-project section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+}
+
+/* Section Titles */
 .about-project h2 {
-  margin-top: 0;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #0f3d2e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.about-project h2::before {
+  content: "✔";
+  color: #16a34a;
+  font-size: 1.1rem;
+}
+
+/* Paragraphs */
+.about-project p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #374151;
+  margin: 0;
+}
+
+/* Lists */
 .about-project ul {
-  padding-left: 18px;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
 }
 
 .about-project li {
-  margin-bottom: 6px;
+  list-style: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid rgba(0,0,0,0.05);
+  font-size: 1rem;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.about-project p {
-  line-height: 1.6;
+.about-project li::before {
+  content: "➜";
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* Bold labels inside Technology Stack */
+.about-project b {
+  color: #14532d;
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 768px) {
+  .about-project {
+    padding: 40px 16px;
+  }
+
+  .about-project h1 {
+    font-size: 2rem;
+  }
+
+  .about-project section {
+    padding: 20px;
+  }
+
+  .about-project h2 {
+    font-size: 1.2rem;
+  }
+
+  .about-project p,
+  .about-project li {
+    font-size: 0.98rem;
+  }
 }
