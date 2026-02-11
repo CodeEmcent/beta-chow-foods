@@ -79,7 +79,7 @@ export default function AdminOrders() {
                     </td>
                     <td>₦{formatMoney(o.total)}</td>
                     <td>
-                      <Link to={`/api/admin/orders/${o.id}`} className="view-link">
+                      <Link to={`/admin/orders/${o.id}`} className="view-link">
                         View
                       </Link>
                     </td>
