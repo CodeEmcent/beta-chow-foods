@@ -71,14 +71,14 @@ export default function AdminOrders() {
                 )
                 .map((o) => (
                   <tr key={o.id}>
-                    <td>{o.order_no}</td>
-                    <td>
+                    <td data-label="Order">{o.order_no}</td>
+                    <td data-label="Status">
                       <span className={`order-status ${o.status.toLowerCase()}`}>
                         {o.status}
                       </span>
                     </td>
-                    <td>₦{formatMoney(o.total)}</td>
-                    <td>
+                    <td data-label="Total">₦{formatMoney(o.total)}</td>
+                    <td data-label="Action">
                       <Link to={`/admin/orders/${o.id}`} className="view-link">
                         View
                       </Link>

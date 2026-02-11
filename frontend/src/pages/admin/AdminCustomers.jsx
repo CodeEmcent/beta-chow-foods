@@ -31,9 +31,9 @@ export default function AdminCustomers() {
         <tbody>
           {customers.map((c) => (
             <tr key={c.id}>
-              <td>{c.email}</td>
-              <td>{c.first_name} {c.last_name}</td>
-              <td>
+              <td data-label="Email">{c.email}</td>
+              <td data-label="Name">{c.first_name} {c.last_name}</td>
+              <td data-label="Status">
                 <span
                   className={`order-status ${
                     c.is_active ? "completed" : "cancelled"
@@ -42,7 +42,7 @@ export default function AdminCustomers() {
                   {c.is_active ? "Active" : "Disabled"}
                 </span>
               </td>
-              <td className="action-buttons">
+              <td data-label="Action" className="action-buttons">
                 <button
                   className={`btn ${
                     c.is_active ? "btn-warning" : "btn-success"

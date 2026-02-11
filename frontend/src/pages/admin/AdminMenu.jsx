@@ -248,7 +248,7 @@ export default function AdminMenu() {
           <tbody>
             {menu.map((item) => (
               <tr key={item.id}>
-                <td>
+                <td data-label="Image">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
@@ -266,17 +266,17 @@ export default function AdminMenu() {
                   )}
                 </td>
 
-                <td>{item.name}</td>
+                <td data-label="Name">{item.name}</td>
 
-                <td style={{ maxWidth: "280px" }}>
+                <td data-label="Description" style={{ maxWidth: "280px" }}>
                   <span style={{ opacity: 0.9 }}>
                     {item.description ? item.description : "No description"}
                   </span>
                 </td>
 
-                <td>₦{formatMoney(item.price)}</td>
+                <td data-label="Price">₦{formatMoney(item.price)}</td>
 
-                <td>
+                <td data-label="Status">
                   <span
                     className={`order-status ${
                       item.is_available ? "completed" : "cancelled"
@@ -286,7 +286,7 @@ export default function AdminMenu() {
                   </span>
                 </td>
 
-                <td className="action-buttons">
+                <td data-label="Action" className="action-buttons">
                   {item.is_available ? (
                     <button
                       className="btn btn-warning"
